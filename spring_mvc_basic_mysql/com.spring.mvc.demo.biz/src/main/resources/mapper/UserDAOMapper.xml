@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.demo.biz.integration.dao.UserDAO">
+
+	<resultMap type="com.spring.demo.biz.dto.User" id="userResultMap">
+		<id column="userid" jdbcType="VARCHAR" property="userId" />
+		<result column="userName" jdbcType="VARCHAR" property="userName" />
+		<result column="enabled" jdbcType="VARCHAR" property="enabled"/>
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="deptCode" jdbcType="VARCHAR" property="deptCode" />
+		<result column="deptName" jdbcType="VARCHAR" property="deptName" />
+		<result column="posCode" jdbcType="VARCHAR" property="posCode" />
+		<result column="posName" jdbcType="VARCHAR" property="posName" />
+		<result column="mobilePhone" jdbcType="VARCHAR" property="mobilePhone" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+	</resultMap>
+
+	<insert id="insertUser" parameterType="com.spring.demo.biz.dto.User">
+		insert into t_user(
+			userid       	,
+			userName     	,
+			password      	,
+			enabled       	,
+			deptCode     	,
+			deptName     	,
+			posCode      	,
+			posName      	,
+			mobilePhone  	,
+			email         	
+		 )values(
+			upper(#{userId  ,jdbcType=VARCHAR   }),
+			#{userName      ,jdbcType=VARCHAR   },
+			#{password      ,jdbcType=VARCHAR   },
+			#{enabled       ,jdbcType=VARCHAR   },
+			#{deptCode      ,jdbcType=VARCHAR   },
+			#{deptName      ,jdbcType=VARCHAR   },
+			#{posCode       ,jdbcType=VARCHAR   },
+			#{posName       ,jdbcType=VARCHAR   },
+			#{mobilePhone   ,jdbcType=VARCHAR   },
+			#{email         ,jdbcType=VARCHAR   }
+		)
+	</insert>
+
+	<select id="queryUser" resultMap="userResultMap">
+		SELECT userid,
+		userName,
+		enabled,
+		password,
+		deptCode,
+		deptName,
+		posCode,
+		posName,
+		mobilePhone,
+		email
+		FROM T_USER
+		WHERE
+		userid=upper(#{userId})
+	</select>
+
+	<select id="queryAllUserList" resultMap="userResultMap">
+		SELECT userid,
+		userName,
+		enabled,
+		password,
+		deptCode,
+		deptName,
+		posCode,
+		posName,
+		mobilePhone,
+		email
+		FROM T_USER
+	</select>
+</mapper>
