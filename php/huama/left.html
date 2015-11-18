@@ -1,0 +1,125 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>管理后台</title>
+      <!-- Bootstrap -->
+  <link href="../bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+  <script src="../bootstrap-3.3.2/js/bootstrap.min.js"></script>
+  <script src="../jquery/jquery-2.1.1.min.js"></script>
+  <link rel="stylesheet" href="../css/left.css" type="text/css"/>
+  <style type="text/css">
+  .glyphicon{
+    padding-right:10px;
+  }
+  </style>
+   <script>
+  function f1(obj){
+      var p = obj.parentNode.children;
+      var flag=0;//显示所有菜单
+      for(var i =1;i<p.length;i++) {
+          var li = p[i];
+          var display = li.style.display;
+          var cls = $(li).hasClass("menu2")
+          if(cls){
+              if(display=='none'){
+                  $(li).show();
+                  flag=1;//展示所有菜单
+              }else{
+                  $(li).hide();
+                  flag=0;
+              }
+          }
+      }
+      if(flag==1){
+          $(obj).children().first().removeClass("glyphicon-hand-right");
+          $(obj).children().first().addClass("glyphicon-hand-down");
+      }else if(flag==0){
+          $(obj).children().first().removeClass("glyphicon-hand-down");
+          $(obj).children().first().addClass("glyphicon-hand-right");
+      }
+      
+  }
+  function f2(obj){
+      var p = obj.parentNode.children;
+      var id = $(obj).attr("id");
+      var flag=0;//显示所有菜单
+      for(var i =1;i<p.length;i++) {
+          var li = p[i];
+          var idli = $(li).attr("id");
+          var f = idli.indexOf(id);
+          if(id!=idli && f>-1){
+              var display = li.style.display;
+              if(display=='none'){
+                  $(li).show();
+                  flag=1;//展示所有菜单
+              }else{
+                  $(li).hide();
+                  flag=0;
+              }
+          }
+      }
+      if(flag==1){
+          $(obj).children().first().removeClass("glyphicon-menu-right");
+          $(obj).children().first().addClass("glyphicon-menu-down");
+      }else if(flag==0){
+          $(obj).children().first().removeClass("glyphicon-menu-down");
+          $(obj).children().first().addClass("glyphicon-menu-right");
+      }
+      
+  }
+  function f3(){
+	   
+  }
+  </script>
+</head>
+<body>
+   <div class="left">
+    <ul>
+        <li class="menu1 menu" onclick="f1(this);" id="id1">
+           <span class="glyphicon glyphicon-hand-right"></span>
+                                系统管理
+        </li>
+        <li class="menu2 menu"  id="id1-1"   style="display:none;" onclick="window.open('userAdd.html','content');">添加账户</li>
+        <li class="menu2 menu"  id="id1-2"   style="display:none;"  onclick="window.open('userList.html','content');">账户列表</li>
+        <li class="menu2 menu"  id="id1-3"   style="display:none;" onclick="window.open('affiche.html','content');">公告设置</li>
+        <li class="menu2 menu"  id="id1-4"   style="display:none;" onclick="f2(this);"><span class="glyphicon glyphicon-menu-right"></span>会员管理</li>
+        <li class="menu3 menu"  id="id1-4-1" style="display:none;">#会员列表#</li>
+    </ul>
+    <ul>
+        <li class="menu1 menu"  id="id2"  onclick="f1(this);" >
+           <span class="glyphicon glyphicon-hand-right"></span>会员管理
+        </li>
+        <li class="menu2 menu"  id="id2-1"   style="display:none;" onclick="window.open('member.html','content');">会员列表</li>
+    </ul>
+    <ul>
+        <li class="menu1 menu"  id="id3"  onclick="f1(this);">
+            <span class="glyphicon glyphicon-hand-right"></span>
+                                商品管理
+        </li>
+        <li class="menu2 menu"  id="id3-1"   style="display:none;" onclick="window.open('classify.html','content');" >分类列表</li>
+        <li class="menu2 menu"  id="id3-2"   style="display:none;" onclick="window.open('brand.html','content');" >品牌列表</li>
+        <li class="menu2 menu"  id="id3-3"   style="display:none;" onclick="window.open('volume.html','content');" >容量列表</li>
+        <li class="menu2 menu"  id="id3-4"   style="display:none;" onclick="window.open('model.html','content');" >型号列表</li>
+        <li class="menu2 menu"  id="id3-5"   style="display:none;" onclick="window.open('commodity.html','content');" >商品列表</li>
+    </ul>
+     <ul>
+        <li class="menu1 menu"  id="id4"     onclick="f1(this);">
+            <span class="glyphicon glyphicon-hand-right"></span>
+                                价格管理
+        </li>
+        <li class="menu2 menu"  id="id4-1"     style="display:none;"  onclick="window.open('offer.html','content');">报价列表</li>
+    </ul>
+     <ul>
+        <li class="menu1 menu"  id="id5"   onclick="f1(this);">
+            <span class="glyphicon glyphicon-hand-right"></span>
+                          订单管理
+        </li>
+        <li class="menu2 menu"  id="id5-1"     style="display:none;" onclick="window.open('dindan.html','content');" >订单列表</li>
+    </ul>
+  </div>
+</body>
+</html>
+
+
