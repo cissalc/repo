@@ -1,0 +1,12 @@
+2014-12-3 23:49:49 org.apache.coyote.AbstractProtocol init
+信息: Initializing ProtocolHandler ["http-bio-8081"]
+2014-12-3 23:49:49 org.apache.coyote.AbstractProtocol init
+信息: Initializing ProtocolHandler ["ajp-bio-8019"]
+2014-12-3 23:49:49 org.apache.catalina.core.StandardService startInternal
+信息: Starting service Catalina
+2014-12-3 23:49:49 org.apache.catalina.core.StandardEngine startInternal
+信息: Starting Servlet Engine: Apache Tomcat/7.0.39
+2014-12-3 23:49:49 org.apache.catalina.startup.HostConfig deployDescriptor
+信息: Deploying configuration descriptor C:\Users\Administrator\Desktop\artifactory\tomcat\conf\Catalina\localhost\artifactory.xml
+2014-12-3 23:49:49 org.apache.catalina.startup.HostConfig deployDescriptor
+警告: A docBase C:\Users\Administrator\Desktop\artifactory\tomcat\webapps\${artifactory.home}\webapps\artifactory.war inside the host appBase has been specified, and will be ignored

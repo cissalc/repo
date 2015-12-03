@@ -1,0 +1,96 @@
+1 master机器，数据的接收端：hbase01.conf
+	#定义source、channel、sink
+	agent0.sources = avrosrc
+	agent0.channels = memoryChannel
+	agent0.sinks = fileSink
+
+	#初始化source
+	agent0.sources.avrosrc.type = avro
+	agent0.sources.avrosrc.bind = master
+	agent0.sources.avrosrc.port = 23004
+	agent0.sources.avrosrc.channels = memoryChannel
+
+	#初始化channel
+	agent0.channels.memoryChannel.type = memory
+	agent0.channels.memoryChannel.keep-alive = 30
+	agent0.channels.memoryChannel.capacity = 10000
+	agent0.channels.memoryChannel.transactionCapacity =10000
+
+	#初始化sink
+	agent0.sinks.fileSink.type = hbase
+	agent0.sinks.fileSink.table = table1
+	agent0.sinks.fileSink.columnFamily = cf
+	agent0.sinks.fileSink.column = col1
+	agent0.sinks.fileSink.serializer = org.apache.flume.sink.hbase.RegexHbaseEventSerializer
+	agent0.sinks.fileSink.channel = memoryChannel
+ 
+2 slave01 机器，数据的发送端：hbase01.conf
+	#定义source、channel、sink
+	agent1.sources = source1
+	agent1.channels = memoryChannel
+	agent1.sinks = sink1
+
+	#初始化source
+	agent1.sources.source1.type = spooldir
+	agent1.sources.source1.spoolDir=/home/hadoop/logs
+	agent1.sources.source1.channels = memoryChannel
+
+	#初始化channel
+	agent1.channels.memoryChannel.type = memory
+	agent1.channels.memoryChannel.keep-alive = 30
+	agent1.channels.memoryChannel.capacity = 10000
+	agent1.channels.memoryChannel.transactionCapacity = 10000
+
+	#初始化sink
+	agent1.sinks.sink1.type = avro
+	agent1.sinks.sink1.hostname = master
+	agent1.sinks.sink1.port = 23004
+	agent1.sinks.sink1.channel = memoryChannel
+
+3 slave02 机器，数据的发送端：hbase01.conf
+	#定义source、channel、sink
+	agent2.sources = source1
+	agent2.channels = memoryChannel
+	agent2.sinks = sink1
+
+	#初始化source
+	agent2.sources.source1.type = spooldir
+	agent2.sources.source1.spoolDir=/home/hadoop/logs
+	agent2.sources.source1.channels = memoryChannel
+
+	#初始化channel
+	agent2.channels.memoryChannel.type = memory
+	agent2.channels.memoryChannel.keep-alive = 30
+	agent2.channels.memoryChannel.capacity = 10000
+	agent2.channels.memoryChannel.transactionCapacity = 10000
+
+	#初始化sink
+	agent2.sinks.sink1.type = avro
+	agent2.sinks.sink1.hostname = master
+	agent2.sinks.sink1.port = 23004
+	agent2.sinks.sink1.channel = memoryChannel
+
+
+4 启动
+	以依次启动 每台机器上面的flume 监控程序
+	bin/flume-ng agent -n agent0 -c conf -f conf/hbase01.conf -Dflume.root.logger=DEBUG,console
+	bin/flume-ng agent -n agent1 -c conf -f conf/hbase01.conf -Dflume.root.logger=DEBUG,console
+	bin/flume-ng agent -n agent2 -c conf -f conf/hbase01.conf -Dflume.root.logger=DEBUG,console
+
+5 编写测试脚本：
+for i in {1..1000000}; do 
+	echo "test flume to Hbase $i" >> /home/hadoop/logs/data.txt; 
+	sleep 0.1; 
+done
+	运行上面的脚本，这样将每隔0.1秒往/home/hadoop/logs/data.txt文件中添加内容
+
+6 包依赖问题
+	在整合的过程中将会出现flume依赖包版本问题，解决方法是用
+	$HADOOP_HOME/share/hadoop/common/lib/guava-11.0.2.jar替换$FLUME_HOME/lib/guava-10.0.1.jar包；
+	用$HADOOP_HOME/share/hadoop/common/lib/protobuf-java-2.5.0.jar替换$HBASE_HOME/lib/protobuf-java-2.4.0.jar包。
+	
+	
+7 hbase 
+	create 'table1','cf'
+	put 'table1' ,'key1','cf:col1','value1'
+	

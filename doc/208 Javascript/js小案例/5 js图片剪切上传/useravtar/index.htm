@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="0">
+<link href="my.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="avtar.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户图像编辑</title>
+</head>
+<body>
+	
+<form id="uploadFrm" action="#" method="post" target="upload_iframe">
+	<div id="main">	
+		<div id="wrap">
+			<img id="pic" src="./images/default.gif" border="0"  />
+			<div id="shadow">
+				<img id="shadowImg" src ="./images/default.gif" />
+			</div>
+			<div id="uploadMsg">
+				正在上传文件，请稍候！
+			</div>
+		</div>
+		
+		<div id="preDiv">
+			<img id="imgId" src="./images/default.gif" />
+			<p style="line-height:120px; font-size:12px; color:#B2B2B2;text-align:center;">头像预览</p>
+		</div>
+
+		<div id="selFileDiv">
+			<a href="#">选择文件</a>
+			<div style="position:relative">	
+				<input name="picture" type="file" id="picture" onchange="javascript:uploadPic();" >					
+			</div>
+		</div>
+		
+		<div id="promptDiv"></div>
+		
+		<div id="btnDiv">
+			<a href="javascript:void(null);" onclick="javascript:cropPic();" class="ok">确定</a>
+			<a href="javascript:void(null);" onclick="javascript:resetPic();" class="reset">重置</a>
+		</div>
+
+		<div style="clear:both"></div>
+
+		<div id="slideDiv">
+			<div id="zoomInDiv" >
+				<img id="in" src="./images/zoom-in.gif"  onmousedown="javascript:zooming(-1);" onmouseup="javascript:mouseDown=false;"/>
+			</div>
+			<div style="float:left;position:relative;width:244px;padding-top:5px;*padding-top:0;" onclick="clickSlide(event);">
+				<img id="slideBg" src="./images/zoom-bg.gif" />
+				<img id="slideBlock" src="./images/zoom-btn.gif"  style="cursor:pointer;"/>
+			</div>
+			<div id="zoomOutDiv">
+				<img id="out" src="./images/zoom-out.gif"  onmousedown="javascript:zooming(1);" onmouseup="javascript:mouseDown=false;"/>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		
+		<div id="promptDiv1"></div>
+		<div id="promptDiv2"></div>
+	</div>
+	<input type="hidden" name="picName" id="picName" />
+	<input type="hidden" name="width" id="width" />
+	<input type="hidden" name="height" id="height" />
+	<input type="hidden" name="left" id="left" />
+	<input type="hidden" name="top" id="top" />
+	<input type="hidden" name="rate" id="rate" />
+</form>
+<div style="display:none;">
+	<iframe name="upload_iframe"></iframe>
+</div>
+</body>
+</html>

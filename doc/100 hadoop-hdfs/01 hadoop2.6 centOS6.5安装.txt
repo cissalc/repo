@@ -1,0 +1,137 @@
+﻿一、安装jdk
+	# for java
+	export JAVA_HOME=/opt/jdk1.7.0_71
+	export JRE_HOME=${JAVA_HOME}/jre
+	export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+	export PATH=${JAVA_HOME}/bin:${JRE_HOME}/bin:$PATH
+
+
+	update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_71/bin/java 300
+	update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_71/bin/javac 300  
+	update-alternatives --install /usr/bin/jar jar /opt/jdk1.7.0_71/bin/jar 300   
+	update-alternatives --install /usr/bin/javah javah /opt/jdk1.7.0_71/bin/javah 300   
+	update-alternatives --install /usr/bin/javap javap /opt/jdk1.7.0_71/bin/javap 300 
+	update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_71/bin/java 300
+	update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_71/bin/javac 300  
+	update-alternatives --install /usr/bin/jar jar /opt/jdk1.7.0_71/bin/jar 300   
+	update-alternatives --install /usr/bin/javah javah /opt/jdk1.7.0_71/bin/javah 300   
+	update-alternatives --install /usr/bin/javap javap /opt/jdk1.7.0_71/bin/javap 300 
+
+二、/etc/hosts 配置ip  /etc/sysconfig/network 修改hostname
+	10.1.1.144 master
+	10.1.1.145 slave01
+	10.1.1.146 slave02
+	10.1.1.147 slave03
+
+三、ssh无密码登陆、关闭防火墙和SELINUX
+	ssh-keygen -t rsa -P ''
+	cat .ssh/id_rsa.pub >> .ssh/authorized_keys
+	scp .ssh/id_rsa.pub hadoop@master:/home/hadoop/id_rsa_h1.pub
+	scp .ssh/id_rsa.pub hadoop@master:/home/hadoop/id_rsa_h2.pub
+	scp .ssh/id_rsa.pub hadoop@master:/home/hadoop/id_rsa_slave03.pub
+	cat id_rsa_h2.pub >> .ssh/authorized_keys
+	cat id_rsa_h1.pub >> .ssh/authorized_keys
+	cat id_rsa_slave03.pub >> .ssh/authorized_keys
+	scp .ssh/authorized_keys hadoop@slave01:/home/hadoop/.ssh/authorized_keys
+	scp .ssh/authorized_keys hadoop@slave02:/home/hadoop/.ssh/authorized_keys
+	scp .ssh/authorized_keys hadoop@slave03:/home/hadoop/.ssh/authorized_keys
+	
+	chmod 600 .ssh/authorized_keys
+
+	su - root
+	service iptables stop
+	chkconfig iptables off
+	vi /etc/selinux/config (修改 SELINUX = disabled)
+	
+四、安装hadoop，修改配置文件
+	一共有7个文件要修改：
+	$HADOOP_HOME/etc/hadoop/hadoop-env.sh
+	$HADOOP_HOME/etc/hadoop/yarn-env.sh
+	$HADOOP_HOME/etc/hadoop/core-site.xml
+	$HADOOP_HOME/etc/hadoop/hdfs-site.xml
+	$HADOOP_HOME/etc/hadoop/mapred-site.xml
+	$HADOOP_HOME/etc/hadoop/yarn-site.xml
+	$HADOOP_HOME/etc/hadoop/slaves
+	
+	vi /home/hadoop/hadoop-2.6.0/etc/hadoop/slaves
+	slave01
+	slave02
+	slave03
+	
+	参照：
+	http://jingyan.baidu.com/article/27fa73269c02fe46f9271f45.html
+	并创建想要的文件目录
+
+	scp -r hadoop-2.6.0 hadoop@slave01:/home/hadoop/
+	scp -r hadoop-2.6.0 hadoop@slave02:/home/hadoop/
+	scp -r hadoop-2.6.0 hadoop@slave03:/home/hadoop/
+
+	./bin/hdfs namenode -format 先格式化
+
+五、启动，验证
+	./sbin/start-dfs.sh
+	./sbin/start-yarn.sh
+	./bin/hadoop fs -mkdir -p /user/hadoop  
+	./bin/hadoop fs -mkdir input
+
+
+
+
+	start-dfs.sh的作用是启动namenode 和 datanode, secondary namenodes
+	start-yarn.sh的作用是启动resourcemanager和nodemanager
+
+	检查启动结果
+	查看集群状态：./bin/hdfs dfsadmin –report
+	查看文件块组成： ./bin/hdfsfsck / -files -blocks
+	查看HDFS: http://master:50070（主机IP）
+	查看RM: http://master:8088（主机IP）
+
+	netstat -pan|grep 2809
+
+
+
+
+
+六、辅助的安装配置
+	CentOS 64位上编译 Hadoop 2.6.0  :
+	http://www.linuxidc.com/Linux/2015-03/115272.htm
+	Linux下安装protobuf
+	http://www.tuicool.com/articles/nYZrmi
+
+
+七、安装eclipse
+	http://blog.csdn.net/ggz631047367/article/details/42497557
+
+
+	ant jar -Dversion=2.6.0 -Declipse.home=/home/hadoop/eclipse -Dhadoop.home=/home/hadoop/hadoop-2.6.0
+
+	cd /home/hadoop/Downloads/hadoop2x-eclipse-plugin-mast/src/contrib/eclipse-plugin
+	ant jar -Dversion=2.6.0 -Declipse.home=/home/hadoop/eclipse -Dhadoop.home=/home/hadoop/hadoop-2.6.0
+
+	cd /home/hadoop/Downloads/hadoop2x-eclipse-plugin-mast/build/contrib/eclipse-plugin
+
+
+
+
+	#sethadoop env
+	export HADOOP_HOME=/home/hadoop/hadoop-2.6.0
+	export PATH=$PATH:$HADOOP_HOME/bin
+	
+八、worldCount例子运行
+	hadoop jar ../share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar wordcount input/ output/file01
+	hdfs dfs -cat output/file01/*
+	
+	然后创建类org.apache.hadoop.examples.WordCount，从hadoop-2.6.0-src中拷贝覆盖 
+   （hadoop-2.6.0-src\hadoop-mapreduce-project\hadoop-mapreduce-examples\src\main\java\org\apache\hadoop\examples\WordCount.java） 
+	
+九、windows下eclipse 连接hadoop2.6
+	http://demo.netfoucs.com/congcong68/article/details/42043093  参考问题
+	
+	
+	
+	
+	
+	
+	
+	
+	

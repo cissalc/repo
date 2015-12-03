@@ -1,0 +1,10 @@
+1 loadBalancing RPC client
+	Flume client sdk 也支持在过个host之间使用负载均衡的RpcClient。
+  这种类型的client带有一个通过空格分隔的host:port主机列表并构成一个
+  负载均衡组。这个client可以指定一个负载均衡策略，既可以随机选择
+  一个配置的host，也可以循环选择一个host。当然你也可以自己编写一个
+  LoadBalancingRpcClient$HostSelector 接口以至于用户可以使用自己
+  编写的选择顺序。这种情况下，用户自定义的类需要指定被指定为host-selector
+  属性的值。
+     backoff
+	 

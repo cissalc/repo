@@ -1,0 +1,28 @@
+[2014-12-03 23:18:36] [info]  [10212] Commons Daemon procrun (1.0.11.0 64-bit) started
+[2014-12-03 23:18:36] [info]  [10212] Service Artifactory name Artifactory
+[2014-12-03 23:18:37] [info]  [10212] Service 'Artifactory' installed
+[2014-12-03 23:18:37] [info]  [10212] Commons Daemon procrun finished
+[2014-12-03 23:18:37] [info]  [10552] Commons Daemon procrun (1.0.11.0 64-bit) started
+[2014-12-03 23:18:37] [info]  [10552] Updating service...
+[2014-12-03 23:18:37] [info]  [10552] Service 'Artifactory' updated
+[2014-12-03 23:18:38] [info]  [10552] Update service finished.
+[2014-12-03 23:18:38] [info]  [10552] Commons Daemon procrun finished
+[2014-12-03 23:18:38] [info]  [10596] Commons Daemon procrun (1.0.11.0 64-bit) started
+[2014-12-03 23:18:38] [info]  [10596] Updating service...
+[2014-12-03 23:18:38] [info]  [10596] Service 'Artifactory' updated
+[2014-12-03 23:18:38] [info]  [10596] Update service finished.
+[2014-12-03 23:18:38] [info]  [10596] Commons Daemon procrun finished
+[2014-12-03 23:35:17] [info]  [12296] Commons Daemon procrun (1.0.11.0 64-bit) started
+[2014-12-03 23:35:17] [info]  [12296] Service Artifactory name Artifactory
+[2014-12-03 23:35:17] [error] [12296] 指定的服务已存在。
+[2014-12-03 23:35:17] [error] [12296] Failed installing 'Artifactory' service
+[2014-12-03 23:35:17] [error] [12296] 指定的服务已存在。
+[2014-12-03 23:35:17] [error] [12296] Commons Daemon procrun failed with exit value: 8 (Failed to install service)
+[2014-12-03 23:35:17] [error] [12296] 指定的服务已存在。
+[2014-12-03 23:35:27] [info]  [12384] Commons Daemon procrun (1.0.11.0 64-bit) started
+[2014-12-03 23:35:28] [info]  [12384] Service Artifactory name Artifactory
+[2014-12-03 23:35:28] [error] [12384] 指定的服务已存在。
+[2014-12-03 23:35:28] [error] [12384] Failed installing 'Artifactory' service
+[2014-12-03 23:35:28] [error] [12384] 指定的服务已存在。
+[2014-12-03 23:35:28] [error] [12384] Commons Daemon procrun failed with exit value: 8 (Failed to install service)
+[2014-12-03 23:35:28] [error] [12384] 指定的服务已存在。

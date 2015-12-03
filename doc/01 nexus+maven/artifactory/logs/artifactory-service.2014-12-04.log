@@ -1,0 +1,10 @@
+[2014-12-04 21:38:31] [info]  [ 1856] Commons Daemon procrun (1.0.11.0 64-bit) started
+[2014-12-04 21:38:31] [info]  [ 1856] Running 'Artifactory' Service...
+[2014-12-04 21:38:31] [info]  [ 1868] Starting service...
+[2014-12-04 21:38:32] [error] [ 1868] %1 不是有效的 Win32 应用程序。
+[2014-12-04 21:38:32] [error] [ 1868] Failed creating java D:\platform\jdk1.6.0_27\jre\bin\server\jvm.dll
+[2014-12-04 21:38:32] [error] [ 1868] %1 不是有效的 Win32 应用程序。
+[2014-12-04 21:38:32] [error] [ 1868] ServiceStart returned 1
+[2014-12-04 21:38:32] [error] [ 1868] %1 不是有效的 Win32 应用程序。
+[2014-12-04 21:39:53] [info]  [ 1856] Run service finished.
+[2014-12-04 21:39:54] [info]  [ 1856] Commons Daemon procrun finished

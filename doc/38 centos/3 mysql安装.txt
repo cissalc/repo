@@ -1,0 +1,39 @@
+一、centOS安装mysql
+	CentOS 7的yum源中貌似没有正常安装mysql时的mysql-sever文件，需要去官网上下载
+		
+	# wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+	# rpm -ivh mysql-community-release-el7-5.noarch.rpm
+	# yum install mysql-community-server
+	成功安装之后重启mysql服务
+		
+	# service mysqld restart
+	初次安装mysql是root账户是没有密码的
+	设置密码的方法
+		
+	# mysql -uroot
+	mysql> set password for 'root’@'localhost’ = password('root’');
+	mysql> exit
+	搞定！
+	
+	systemctl enable mysqld ==> 开机自启动
+	systemctl start mysqld  ==> 启动
+	systemctl stop  mysqld   ==> 关闭
+	
+	--以下为了能够远程连接
+	vi /etc/mysql/my.cnf  或者  vi /etc/my.cnf   找到bind-address = 127.0.0.1   注释掉这行
+	
+	授权用户能进行远程连接
+	mysql -uroot
+	   grant all privileges on *.* to root@"%" identified by "root" with grant option;
+	   flush privileges;
+		
+二、mysql的主要配置信息
+	1./etc/my.cnf 这是mysql的主配置文件
+	2./var/lib/mysql   mysql数据库的数据库文件存放位置
+	3./var/log mysql数据库的日志输出存放位置
+
+三、常用命令
+	1、登陆 
+		mysql -uroot -proot
+	2、查看版本
+		mysql -V

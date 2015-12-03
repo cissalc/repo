@@ -1,0 +1,4 @@
+1、oracle用sqldeveloper连接不上，
+	但cmd可以通过sqlplus "sys/123456@10.1.1.131 as sysdba"
+	
+	解决方法：关闭防火墙，并重新启动

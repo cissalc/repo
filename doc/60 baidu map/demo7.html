@@ -1,0 +1,39 @@
+<html>
+    <head>
+	    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>标注跟信息窗口</title>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+        <style type="text/css">
+        #hh{
+            width:600px;
+            height:600px;
+        }
+        </style>
+    </head>
+       <body>
+        <div id="hh"></div>
+       <script type="text/javascript">
+            var map = new BMap.Map("hh");
+            var point = new BMap.Point(119.305724, 26.092186);
+            map.centerAndZoom(point,14);  
+            map.enableScrollWheelZoom();
+           var opts = {anchor:  BMAP_ANCHOR_TOP_LEFT, offset: new BMap.Size(10, 10)}  
+           map.addControl(new BMap.NavigationControl(opts));  
+         
+         
+       var opts = { 
+	   width : 250,       
+       height: 100,      
+       title : "Hello" };   
+
+         var infoWindow = new BMap.InfoWindow("fffffff", opts);  
+       
+		  var marker = new BMap.Marker(point);        // 创建标注   
+         marker.addEventListener("click", function(){
+         map.openInfoWindow(infoWindow, map.getCenter());});
+      map.addOverlay(marker);
+         
+        </script>
+	   
+		 </body>
+</html>

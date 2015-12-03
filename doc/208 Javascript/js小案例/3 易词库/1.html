@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="1.css" />
+	<script src="./jquery-1.8.2.js"> </script>
+<style>
+	.g-block{
+		position:absolute;
+		background-color:#99ff66;
+		width:100px;
+		height:60px;
+		color:#333;
+		text-align:center;
+		padding-top:22px;	
+		font-size:24px;
+	}
+</style>
+<script>
+	function run(id) {
+		var arry1 = {'spring':'春天','summer':'夏天','autumn':'秋天','winter':'冬天'};  //创建一个对象，该对象有属性和值
+		var obj = document.getElementById(id);	//通过ID获取html中的元素对象
+		var text = obj.innerText;				//获取对象中的值
+		alert(arry1[text]);    					//获取对象的某个属性
+		var oldIndex = obj.style["z-index"];   //获取样式中的某个值
+		var v = obj.attributes["id"].value;	   //获取html元素内的值
+		obj.style["z-index"] = oldIndex-4;     //赋值操作
+	}
+</script>
+</head> 
+<body>
+	<a href="javascript:void(0);">
+	<div class="div1">
+		<div id="id1" onclick="run('id1')" class="g-block" style="z-index:0;">spring</div>
+		<div id="id2" onclick="run('id2')" class="g-block" style="z-index:1">summer</div>
+		<div id="id3" onclick="run('id3')" class="g-block" style="z-index:2">autumn</div>
+		<div id="id4" onclick="run('id4')" class="g-block" style="z-index:3">winter</div>
+	</div>
+	<a>
+</body>
+</html>

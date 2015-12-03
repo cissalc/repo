@@ -1,0 +1,46 @@
+1.staging area -->> 可以理解为local repo
+working area  -->> 就是本地看到的工程目录中内容
+working area分为:1)untracked files -->> 未纳入git管理，比如新增加的文件
+		 2)unstaged files  -->> 已纳入git管理，比如对本地文件的修改，删除，但还未提交的文件
+cached area  -->> 是git add操作的文件,这些文件还未commit至local repo
+		  被added文件即成为staged files
+
+
+2.git diff 是将working area中内容与其它分支，提交，远程仓库中文件进行对比
+---表示用来对比的文件
++++表示working area中文件
+@@ -4,6 +4,7 @@  表示一个对比小结
+用来对比的文件的第4行起的6行  与   working area中第4行起的7行差异 如下
+空格开头的行表示没有差异
+
+git diff  -->> staging area vs working area
+git diff master -->> master vs working area
+git diff HEAD   -->> HEAD指向的内容与working area 
+git diff refs/remotes/orgin/master -->> 远程master与working area对比
+git diff 0c5ee16a6a4c849d0ae0448caa8ff174399c7c3c ./socket_helper.cpp   -->> 某次提交与working area中socket_helper.cpp比较
+
+3.git checkout -- ~/work/myfile   -->> 与svn的checkout不同，这个用于撤销working area中文件的修改，类似于svn的revert
+git reset -- ~/work/myfile 有等同功效
+
+4.git merge 
+1)fast forward  -->> 单一父节点
+2)three way     -->> 不同父节点，可能会产生冲突
+
+5.git reset
+--hard   -->> 可以删除提交
+--soft   
+--mixed
+
+6.git stash
+
+    git stash list   #列出所有stash
+
+    git stash      #将当前的Work Directory和Index的改动暂存起来
+
+    git stash apply stash@{0}    #将0号stash的状态返回
+
+    git stash drop stash@{0}     #将0号stash删除
+
+    git statsh clear                     #删除所有stash
+
+7.git show commit-id 可以查看提交详情

@@ -1,0 +1,144 @@
+1 Failover Client：
+		封装了Avro RPC client的类默认提供故障处理能力
+	hosts采用空格分开host:port所代表的flume agent
+	构成一个故障处理组。
+	如果当前选择host agent有问题，这个failover client
+	会自动负载到组中的下一个host中
+	
+2 master  failover.conf
+	#定义source、channel、sink
+	agent-1.channels = ch-1
+	agent-1.sources = avro-source1
+	agent-1.sinks = log-sink1
+	
+	#初始化source
+	agent-1.sources.avro-source1.channels = ch-1
+	agent-1.sources.avro-source1.type = avro
+	agent-1.sources.avro-source1.bind = master
+	agent-1.sources.avro-source1.port = 41414
+	agent-1.sources.avro-source1.threads = 5
+	
+	#初始化channel
+	agent-1.channels.ch-1.type = memory
+	agent-1.channels.ch-1.capacity = 1000  
+	agent-1.channels.ch-1.transactionCapacity = 100  
+	
+	#初始化sink
+	agent-1.sinks.log-sink1.channel = ch-1
+	agent-1.sinks.log-sink1.type = logger
+
+3 slave01   failover.conf
+	#定义source、channel、sink
+	agent-1.channels = ch-1
+	agent-1.sources = avro-source1
+	agent-1.sinks = log-sink1
+	
+	#初始化source
+	agent-1.sources.avro-source1.channels = ch-1
+	agent-1.sources.avro-source1.type = avro
+	agent-1.sources.avro-source1.bind = slave01
+	agent-1.sources.avro-source1.port = 41414
+	agent-1.sources.avro-source1.threads = 5
+	
+	#初始化channel
+	agent-1.channels.ch-1.type = memory
+	
+	#初始化sink
+	agent-1.sinks.log-sink1.channel = ch-1
+	agent-1.sinks.log-sink1.type = logger
+4 slave02     failover.conf
+	#定义source、channel、sink
+	agent-1.channels = ch-1
+	agent-1.sources = avro-source1
+	agent-1.sinks = log-sink1
+	
+	#初始化source
+	agent-1.sources.avro-source1.channels = ch-1
+	agent-1.sources.avro-source1.type = avro
+	agent-1.sources.avro-source1.bind = slave02
+	agent-1.sources.avro-source1.port = 41414
+	agent-1.sources.avro-source1.threads = 5
+	
+	#初始化channel
+	agent-1.channels.ch-1.type = memory
+	
+	#初始化sink
+	agent-1.sinks.log-sink1.channel = ch-1
+	agent-1.sinks.log-sink1.type = logger
+5 启动
+bin/flume-ng agent -c conf -f conf/failover.conf -Dflume.root.logger=DEBUG,console -n agent-1
+bin/flume-ng agent -c conf -f conf/failover.conf -Dflume.root.logger=DEBUG,console -n agent-1
+bin/flume-ng agent -c conf -f conf/failover.conf -Dflume.root.logger=DEBUG,console -n agent-1
+
+6 客户端
+import java.nio.charset.Charset;
+import java.util.Properties;
+
+import org.apache.flume.Event;
+import org.apache.flume.EventDeliveryException;
+import org.apache.flume.api.RpcClient;
+import org.apache.flume.api.RpcClientConfigurationConstants;
+import org.apache.flume.api.RpcClientFactory;
+import org.apache.flume.event.EventBuilder;
+
+public class FailOverRPC {
+	public static void main(String[] args) {
+	    MySecureRpcClientFacade client = new MySecureRpcClientFacade();
+	    // Initialize client with the remote Flume agent's host, port
+	    Properties props = new Properties();
+	    props.setProperty(RpcClientConfigurationConstants.CONFIG_CLIENT_TYPE, "default_failover");
+	    props.setProperty("hosts", "h1 h2 h3");
+	    props.setProperty("hosts.h1", "master:41414");
+	    props.setProperty("hosts.h2", "slave01:41414");
+	    props.setProperty("hosts.h3", "slave02:41414");
+
+	    // Initialize client with the kerberos authentication related properties
+	   // props.setProperty("kerberos", "true");
+	    //props.setProperty("client-principal", "flumeclient/client.example.org@EXAMPLE.ORG");
+	    //props.setProperty("client-keytab", "/tmp/flumeclient.keytab");
+	   // props.setProperty("server-principal", "flume/server.example.org@EXAMPLE.ORG");
+	    client.init(props);
+
+	    // Send 10 events to the remote Flume agent. That agent should be
+	    // configured to listen with an AvroSource.
+	    String sampleData = "Hello Flume!";
+	    for (int i = 0; i < 10; i++) {
+	      client.sendDataToFlume(sampleData+i);
+	    }
+
+	    client.cleanUp();
+	  }
+	}
+
+	class MySecureRpcClientFacade {
+	  private RpcClient client;
+	  private Properties properties;
+
+	  public void init(Properties properties) {
+	    // Setup the RPC connection
+	    this.properties = properties;
+	    // Create the ThriftSecureRpcClient instance by using SecureRpcClientFactory
+	    //this.client = SecureRpcClientFactory.getThriftInstance(properties);
+	    this.client = RpcClientFactory.getInstance(properties);
+	  }
+
+	  public void sendDataToFlume(String data) {
+	    // Create a Flume Event object that encapsulates the sample data
+	    Event event = EventBuilder.withBody(data, Charset.forName("UTF-8"));
+
+	    // Send the event
+	    try {
+	      client.append(event);
+	    } catch (EventDeliveryException e) {
+	      // clean up and recreate the client
+	      client.close();
+	      client = null;
+	      client = RpcClientFactory.getInstance(properties);
+	    }
+	  }
+
+	  public void cleanUp() {
+	    // Close the RPC connection
+	    client.close();
+	  }
+}

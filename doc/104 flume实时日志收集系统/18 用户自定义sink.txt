@@ -1,0 +1,22 @@
+1 vi f3.conf
+	#定义source、channel、sink
+	agent-1.channels = ch-1
+	agent-1.sources = avro-source1
+	agent-1.sinks = log-sink1
+	
+	#初始化source
+	agent-1.sources.avro-source1.channels = ch-1
+	agent-1.sources.avro-source1.type = avro
+	agent-1.sources.avro-source1.bind = master
+	agent-1.sources.avro-source1.port = 41414
+	agent-1.sources.avro-source1.threads = 5
+	
+	#初始化channel
+	agent-1.channels.ch-1.type = memory 
+	
+	#初始化sink
+	agent-1.sinks.log-sink1.channel = ch-1
+	agent-1.sinks.log-sink1.type = flume.MySink
+	
+2 启动
+bin/flume-ng agent -c conf -f conf/f3.conf -Dflume.root.logger=DEBUG,console -n agent-1

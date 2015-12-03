@@ -1,0 +1,2 @@
+²Î¿´http://blog.csdn.net/oneinmore/article/details/44984419
+mvn eclipse:eclipse -Dmaven.test.skip=true

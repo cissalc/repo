@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+	var bigger = true;
+	function change(obj){
+		var size = obj.style.fontSize;
+		console.log(size);
+		size = parseInt(size);
+		console.log(size);
+		if(size>=30){
+			bigger = false;
+			obj.innerHTML = '点击变小';
+		}else if(size<=16){
+			bigger = true;
+			obj.innerHTML = '点击变大';
+		}
+		if(bigger){
+			obj.style.fontSize = size+2+"px";
+		}else{
+			obj.style.fontSize = size-2+"px";
+		}
+	}
+</script>
+</head>
+<body>
+	<div onclick="change(this)" style="font-size:16px;">点击变大</div>
+</body>
+</html>

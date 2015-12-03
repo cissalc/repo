@@ -1,0 +1,72 @@
+hive只需要在主节点(名称节点)上操作
+
+1.2 解压并安装
+
+1.3 添加环境变量
+	export HIVE_HOME=/home/hadoop/hive-1.1.0
+    export PATH=$HIVE_HOME/bin:$PATH
+	
+1.4 配置 Hive配置文件 
+	1.4.1  配置hive-config.sh    (/home/hadoop/hive-1.1.0/bin)
+		export JAVA_HOME=/opt/jdk1.7.0_71
+		export HADOOP_HOME=/home/hadoop/hadoop-2.6.0
+		export HIVE_HOME=/home/hadoop/hive-1.1.0
+		export PATH=$HADOOP_HOME/bin:$HIVE_HOME/bin:$JAVA_HOME/bin:$PATH
+		PATH=$PATH:$HOME/bin
+		export PATH
+		
+	1.4.2  配置 hive-default.xml 和 hive-site.xml    (/home/hadoop/hive-1.1.0/conf)
+		cp hive-default.xml.template hive-default.xml
+		cp hive-default.xml.template hive-site.xml
+		备注:hive-default.xml用于保留默认配置,hive-site.xml用于个性化配置,可覆盖默认配置.
+
+	1.4.3 配置
+		mv  hive-log4j.properties.template hive-log4j.properties
+			mkdir /home/hadoop/hive-1.1.0/logs
+		mv  hive-exec-log4j.properties.template  hive-exec-log4j.properties
+		mv  hive-env.sh.template   hive-env.sh
+		
+1.5  配置mysql作为hive元数据存储数据库
+	编辑hive-site.xml   mysql配置在远程
+	<property>  
+	  <name>javax.jdo.option.ConnectionURL</name>  
+	  <value>jdbc:mysql://10.1.1.202:3306/hive?createDatabaseIfNotExist=true</value>
+	</property>  
+	<property>  
+	  <name>javax.jdo.option.ConnectionDriverName</name>  
+	  <value>com.mysql.jdbc.Driver</value>  
+	</property>  	   
+	<property>  
+	  <name>javax.jdo.option.ConnectionUserName</name>  
+	  <value>root</value>  
+	</property>  	   
+	<property>  
+	  <name>javax.jdo.option.ConnectionPassword</name>  
+	  <value>root</value>  
+	</property>  	  
+	<property>  
+	  <name>hive.metastore.local</name>  
+	  <value>false</value>  
+	</property>
+	
+	将mysql jdbc驱动拷贝到$HIVE_HOME/lib目录下
+	cp mysql-connector-java-5.1.32-bin.jar /home/hadoop/hive-1.1.0/lib
+	
+1.6 启动hive
+	hive
+	问题：
+	[ERROR] Terminal initialization failed; falling back to unsupported
+	java.lang.IncompatibleClassChangeError: Found class jline.Terminal, but interface was expected
+	原因是hadoop目录下存在老版本jline：
+	/home/hadoop/hadoop-2.6.0/share/hadoop/yarn/lib：
+	-rw-r--r-- 1 root root   87325 Mar 10 18:10 jline-0.9.94.jar
+	mv jline-0.9.94.jar jline-0.9.94_bak.jar
+	 
+	解决方法是：
+	将hive下的新版本jline的JAR包拷贝到hadoop下：
+	cp /home/hadoop/hive-1.1.0/lib/jline-2.12.jar /home/hadoop/hadoop-2.6.0/share/hadoop/yarn/lib/
+	
+1.7 基本操作
+	hive
+	show tables;
+	

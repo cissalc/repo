@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+	var x = function(){
+		console.log('x');
+	}
+	function fn(){
+		console.log('fn');
+		return "fun";
+	}
+	var y = fn;
+	function Persion(name,age){
+		this.name = name;
+		this.age = age;
+		this.address = '萍乡';
+		this.p = this;
+		
+		//创建一个行为
+		this.say = function(){    //让say等于一个匿名函数
+			console.log('调用persion类的say函数');
+		}
+		//如果没有用this声明，这个变量就仅仅只是一个局部变量，不是类的属性
+	}
+	var p1 = new Persion('刘翔飞',23);
+	console.log(p1);
+	console.log(p1 instanceof Persion);
+	console.log(p1.p);
+	x();
+	y();
+	var z = x();
+	console.log(z);
+	console.log(z==null);  
+	p1.say();
+</script>
+</head>
+<body>
+		在prototype.js中，prototype对象是实现面向对象的一个重要机制。
+</body>
+</html>

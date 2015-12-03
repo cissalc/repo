@@ -1,0 +1,24 @@
+<html>
+    <head>
+	    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>hello</title>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+        <style type="text/css">
+        #hh{
+            width:600px;
+            height:600px;
+        }
+        </style>
+    </head>
+       <body>
+        <div id="hh"></div>
+       <script type="text/javascript">
+            var map = new BMap.Map("hh");
+            var point = new BMap.Point(119.305724, 26.092186);
+            map.centerAndZoom(point,14);  
+            map.enableScrollWheelZoom();
+			 
+        </script>
+	   
+		 </body>
+</html>

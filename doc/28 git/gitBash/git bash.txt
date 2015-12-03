@@ -1,0 +1,26 @@
+git status：可以查看你变动了那些文件，会有红色的提示
+
+可以指定加上某个文件
+
+git add src/main/webapp/demographic/  表示把这个文件夹里改动的东西加上去
+
+再 git status时候，你会发现这个会变成绿色，其他没加的还是红色！！
+
+
+oscar特定加注释的格式
+git commit -m"bug fixed #166:xxxxxxxx"
+git commit -m"new feature fixed #166:xxxxx"
+
+提交上去！
+git push origin master
+
+把代码更新到最新版
+git pull
+这个操作并不是就是把最新的代码下过来覆盖！里面有一套机制
+
+当出现error时就说明没有更新成功！！
+这个时候你可能要做一些处理才可以git pull
+
+可以通过git diff来查看改变前后的不同之处！
+
+

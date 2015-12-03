@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+	<script>
+	function Persion(name,age){
+		this.name = name;
+		this.age = age;
+		this.address = '萍乡';
+		this.p = this;
+		this.say = function(){    
+			console.log('调用persion类的say函数');
+		}
+	}
+	var p1 = new Persion('刘翔飞',23);
+	console.log(p1.name);
+	console.log(p1['name']);
+	
+	//获取对象显示所有声明的属性
+	for(var a in p1){     
+		console.log(a+":"+p1[a]);
+	}
+	
+	</script>
+<body>
+
+ c
+</body>
+</html>

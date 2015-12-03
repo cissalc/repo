@@ -1,0 +1,9 @@
+1 Hadoop有一个抽象的文件系统概念。HDFS只是其中的一个实现。
+	Hadoop中的一个文件系统接口：
+		org.apache.hadoop.fs.FileSystem
+			FileSystem get(Configuration)
+			FSDataInputStream open(Path f)
+	几种实现：
+		DistributedFileSystem
+		LocalFileSystem
+		HttpFSFileSystem

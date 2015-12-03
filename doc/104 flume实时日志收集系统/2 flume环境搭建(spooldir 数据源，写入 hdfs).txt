@@ -1,0 +1,85 @@
+agent0 agent1 agent2
+http://mirror.bit.edu.cn/apache/flume/
+$tar zxvf apache-flume-1.4.0-bin.tar.gz /home/hadoop
+$cd flume/conf/
+agent0:
+flume 配置文件重命名为 flume-agent0 ; 并修改里面内容为
+	#定义source、channel、sink
+	agent0.sources = source1
+	agent0.channels = memoryChannel
+	agent0.sinks = sink1
+	
+	#初始化source
+	agent0.sources.source1.type = avro
+	agent0.sources.source1.bind = master
+	agent0.sources.source1.port = 23004
+	agent0.sources.source1.channels = memoryChannel
+	
+	#初始化channel
+	agent0.channels.memoryChannel.type = memory
+	agent0.channels.memoryChannel.capacity = 100
+	agent0.channels.memoryChannel.keep-alive = 100
+	
+	#初始化sink
+	agent0.sinks.sink1.type=hdfs
+	agent0.sinks.sink1.hdfs.path=hdfs://master:9000/hmbbs/%y-%m-%d/%H%M%S
+	agent0.sinks.sink1.hdfs.fileType=DataStream
+	agent0.sinks.sink1.hdfs.writeFormat=TEXT
+	agent0.sinks.sink1.hdfs.round=true
+	agent0.sinks.sink1.hdfs.roundValue=10
+	agent0.sinks.sink1.hdfs.roundUnit=minute
+	#agent0.sinks.sink1.hdfs.rollInterval=1
+	agent0.sinks.sink1.hdfs.useLocalTimeStamp=true
+	agent0.sinks.sink1.channel = memoryChannel
+	agent0.sinks.sink1.hdfs.filePrefix=events-
+agent1:
+	flume 配置文件重命名为 flume-agent1 ; 并修改里面内容为
+	#定义source、channel、sink
+	agent1.sources = source1
+	agent1.channels = memoryChannel
+	agent1.sinks = sink1
+	agent1.sources.source1.type = spooldir
+	agent1.sources.source1.spoolDir=/home/hadoop/logs
+	agent1.sources.source1.channels = memoryChannel
+	# Each sink's type must be defined
+	#Specify the channel the sink should use
+	# Each channel's type is defined.
+	agent1.channels.memoryChannel.type = memory
+	# Other config values specific to each type of channel(sink or source)
+	# can be defined as well
+	# In this case, it specifies the capacity of the memory channel
+	#agent1.channels.memoryChannel.capacity = 1000
+	#agent1.channels.memoryChannel.keep-alive = 1000
+	#agent1.channels.memoryChannel.type=file
+	agent1.sinks.sink1.type = avro
+	agent1.sinks.sink1.hostname = master
+	agent1.sinks.sink1.port = 23004
+	agent1.sinks.sink1.channel = memoryChannel
+
+agent2:
+	flume 配置文件重命名为 flume-agent2 ; 并修改里面内容为
+	agent2.sources = source1
+	agent2.channels = memoryChannel
+	agent2.sinks = sink1
+	agent2.sources.source1.type = spooldir
+	agent2.sources.source1.spoolDir=/home/hadoop/logs
+	agent2.sources.source1.channels = memoryChannel
+	# Each sink's type must be defined
+	#Specify the channel the sink should use
+	# Each channel's type is defined.
+	agent2.channels.memoryChannel.type = memory
+	# Other config values specific to each type of channel(sink or source)
+	# can be defined as well
+	# In this case, it specifies the capacity of the memory channel
+	#agent2.channels.memoryChannel.capacity = 1000
+	#agent2.channels.memoryChannel.keep-alive = 1000
+	#agent2.channels.memoryChannel.type=file
+	agent2.sinks.sink1.type = avro
+	agent2.sinks.sink1.hostname = master
+	agent2.sinks.sink1.port = 23004
+	agent2.sinks.sink1.channel = memoryChannel
+
+以依次启动 每台机器上面的flume 监控程序
+bin/flume-ng agent -n agent0 -c conf -f conf/flume-agent0 -Dflume.root.logger=DEBUG,console
+bin/flume-ng agent -n agent1 -c conf -f conf/flume-agent1 -Dflume.root.logger=DEBUG,console
+bin/flume-ng agent -n agent2 -c conf -f conf/flume-agent2 -Dflume.root.logger=DEBUG,console

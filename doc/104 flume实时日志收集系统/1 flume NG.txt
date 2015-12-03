@@ -1,0 +1,19 @@
+采用 flume 收集日志，发送到 kafka 队列做缓冲，storm 分布式实时框架进行消费处理，
+短期数据落地到 hbase、mongo中，长期数据进入 hadoop 中存储。
+http://www.ixirong.com/2015/05/18/how-to-install-flume-ng/
+
+Flume NG：Flume 发展史上的第一次革命
+http://www.ibm.com/developerworks/cn/data/library/bd-1404flumerevolution/index.html
+
+基于Flume的美团日志收集系统(一)架构和设计
+http://tech.meituan.com/mt-log-system-arch.html
+
+Flume-ng的原理和使用
+http://blog.javachen.com/2014/07/22/flume-ng.html
+
+flume日志收集系统搭建
+http://www.huyanping.cn/flume日志收集系统搭建/
+http://blog.csdn.net/xueliang1029/article/details/24039459
+
+
+

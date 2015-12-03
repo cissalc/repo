@@ -1,0 +1,97 @@
+centOS7 
+
+1、修改/etc/fstab文件：添加
+	 tmpfs                   /dev/shm                tmpfs   defaults,size=2048M      0 0
+	 
+	 umount /dev/shm
+	 mount /dev/shm
+	 
+	 查看
+	 df -h /dev/shm
+	 
+2、增加虚拟内存
+	sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+	
+	设置为交换文件
+	sudo mkswap /swapfile
+	
+	开启交换分区即可
+	sudo swapon /swapfile
+	
+	查看
+	sudo swapon -s 
+
+3、下载依赖包
+	sudo yum install libaio*
+	yum install libaio bc flex 
+
+4、解压
+	unzip -q oracle-xe-11.2.0-1.0.x86_64.rpm.zip
+	
+5、安装
+	rpm -ivh oracle-xe-11.2.0-1.0.x86_64.rpm 
+	
+6、配置
+	/etc/init.d/oracle-xe configure
+	
+7、设置环境
+	cd /u01/app/oracle/product/11.2.0/xe/bin  
+	. ./oracle_env.sh
+	
+	su - oracle
+	cd ~
+	. /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh
+	
+8、拷贝系统环境变量
+	passwd oracle
+	oracle
+	为了使用方便，我们可以把个人用户home目录下的.bashrc 和.bash_profile拷贝到该目录下，再用chown改变文件所属：
+	# chown oracle .bash_profile
+	# chown oracle .bashrc
+	# chmod 755 .bash_profile
+	# chmod 755 .bashrc
+	
+9、设置oracle环境变量
+	vi /etc/profile
+		# Oracle Settings
+		TMP=/tmp; export TMP
+		TMPDIR=$TMP; export TMPDIR
+		ORACLE_BASE=/u01/app/oracle; export ORACLE_BASE
+		ORACLE_HOME=$ORACLE_BASE/product/11.2.0/xe; export ORACLE_HOME
+		ORACLE_SID=XE; export ORACLE_SID
+		ORACLE_TERM=xterm; export ORACLE_TERM
+		PATH=/usr/sbin:$PATH; export PATH
+		PATH=$ORACLE_HOME/bin:$PATH; export PATH
+		TNS_ADMIN=$ORACLE_HOME/network/admin
+		LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
+		CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib; export CLASSPATH
+
+		if [ $USER = "oracle" ]; then
+		  if [ $SHELL = "/bin/ksh" ]; then
+			ulimit -p 16384
+			ulimit -n 65536
+		  else
+			ulimit -u 16384 -n 65536
+		  fi
+		fi
+	
+	source /etc/profile
+	
+	/etc/security/limits.conf  文件末尾追加
+		oracle        soft    nproc    2047  
+		oracle        hard    nproc    16384  
+		oracle        soft    nofile    1024  
+		oracle        hard    nofile    65536  
+			
+	
+10、登陆
+	sqlplus "sys/oracle as sysdba"
+	
+	To allow remote access to Oracle 11g XE GUI (as well as Application Express GUI) issue the following from SQL*Plus 执行下面的语句：
+	EXEC DBMS_XDB.SETLISTENERLOCALACCESS(FALSE);  
+
+	关闭数据库：
+	shutdown immediate
+	
+	启动数据库：
+	startup

@@ -1,0 +1,20 @@
+<?xml
+            version="1.0" encoding="UTF-8"?>
+            <site> <description> PHPEclipse stable
+            builds. </description>
+                <feature url="features/net.sourceforge.phpeclipse.feature_1.2.3.200910091456PRD.jar" id="net.sourceforge.phpeclipse.feature"
+            version="1.2.3.200910091456PRD">
+                <category name="PHPEclipseStableBuilds"/>
+                </feature>
+                <feature url="features/net.sourceforge.phpeclipse.debug.feature_1.2.3.200910091456PRD.jar" id="net.sourceforge.phpeclipse.debug.feature"
+                            version="1.2.3.200910091456PRD">
+                                <category name="PHPEclipseStableBuilds"/>
+                                </feature>
+                <feature url="features/net.sourceforge.phpeclipse.xdebug.feature_1.2.3.200910091456PRD.jar" id="net.sourceforge.phpeclipse.xdebug.feature"
+                                            version="1.2.3.200910091456PRD">
+                                                <category name="PHPEclipseStableBuilds"/>
+                                                </feature>
+            <category-def name="PHPEclipseStableBuilds"
+            label="PHPEclipse Stable Builds"> </category-def>
+            </site> 
+            

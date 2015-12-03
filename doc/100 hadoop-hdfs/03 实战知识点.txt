@@ -1,0 +1,50 @@
+MapReduce
+1 WordCount例子解析
+2 Text、IntWritable类分析   
+	Writable
+	Comparable
+3 Combiners和Partitioner
+	HashPartitioner (mapreduce的默认artitioner)
+	BinaryParitioner
+	KeyFieldBasedPartitioner
+	TotalOrderPartitioner
+4 多文件输出MultipleOutPutFormat
+5 Distributed Cached
+6 通过PathFilter进行文件过滤
+	自定义FilterPath必须 implements PathFilter
+7 MRUnit测试
+	MapDriver的使用
+	ReduceDriver的使用
+	MapReduceDriver的使用
+
+8 MapReduce的输入
+	在执行mapreduce之前，原始数据被分割成若干个split，
+	每个split作为一个map任务的输入，在map执行过程中split会
+	被分解成一个个记录（key-value对），map会依次处理每一个记录。
+
+	FileInputFormat:
+	所有以文件作为数据源的InputFormat实现的基类，
+	保存作为job输入的所有文件，并实现了对输入文件计算
+	splits的方法。至于获得记录的方法是由不同的子类进行实现的。
+	如何split：
+	1）只划分比HDFS block大的文件
+	2）如果一个文件的大小比block小，将不会划分，
+	3）当hadoop处理很多小文件（文件大小小于hdfs block大小）
+	   由于FileInputFormat不会对小文件进行划分，所以每一个小文件
+	   都会被当做一个split并分配一个map任务，导致效率低下。
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+		
+	

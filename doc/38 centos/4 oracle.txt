@@ -1,0 +1,57 @@
+修改/etc/sysctl.conf文件，在文件尾部添加
+
+fs.aio-max-nr = 1048576
+fs.file-max = 6815744
+kernel.shmall = 2097152
+kernel.shmmax = 4294967295
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default = 262144
+net.core.rmem_max = 4194304
+net.core.wmem_default = 262144
+net.core.wmem_max = 1048586
+
+
+添加安装Oracle的用户和组
+groupadd -g 1000 oinstall
+groupadd -g 1001 dba
+useradd -u 1000 -g oinstall -G dba oracle
+passwd oracle
+
+创建Oracle目录，并授予对应的权限
+mkdir -p /u01/app/oraclechown -R oracle:oinstall /u01/app
+
+
+
+
+
+
+
+
+
+2.1 检查安装oracle所依赖的组件包是否安装上：
+	yum install binutils-*
+	yum install compat-libstdc++*
+	yum install elfutils-libelf*
+	yum install gcc-*
+	yum install glibc-*
+	yum install kernel-headers-*
+	yum install pdksh-*          (没有按照成功)
+	yum install libaio-*
+	yum install libgcc-*
+	yum install libgomp-*
+	yum install libstdc++-*
+	yum install libstdc++-devel-*
+	yum install make-*
+	yum install numactl-devel-*
+	yum install sysstat-*
+	yum install unixODBC-*
+	yum install unixODBC-devel-*
+
+2.2 安装缺少的软件包：
+
+#rpm –ivh 软件包名称 //使用本地光盘镜像安装软件包
+
+#yum install 软件包名称 //使用yum联网安装
+

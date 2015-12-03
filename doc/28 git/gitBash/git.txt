@@ -1,0 +1,15 @@
+1.当错误提交后，可以如下命令删除(尤其还没有提交时很有用)
+
+git reset --hard head^1   --->> 可以把最近的commit删除
+
+
+2.git log
+
+3.git reflog
+
+4.git merge 测试分支
+将 测试分支 合并到 主干 时，想在主干分支上只看到一条提交记录，那么可以采用
+
+git checkout 主分支
+git merge --squash 分支1
+git commit -m "新message" 

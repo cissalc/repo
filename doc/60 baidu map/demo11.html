@@ -1,0 +1,53 @@
+<html>
+    <head>
+	    <meta http-equiv="content-type" content="text/html; charset=gbk2312" />
+        <title>·´½âÎö</title>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+        <style type="text/css">
+        #hh{
+            width:600px;
+            height:400px;
+        }
+        </style>
+    </head>
+       <body>
+        <div id="hh"></div>
+		
+       <script type="text/javascript">
+            var map = new BMap.Map("hh");
+            var point = new BMap.Point(116.404, 39.915);
+            map.centerAndZoom(point,14);  
+            map.enableScrollWheelZoom();
+           var opts = {anchor:  BMAP_ANCHOR_TOP_LEFT, offset: new BMap.Size(10, 10)}  
+           map.addControl(new BMap.NavigationControl(opts));  
+         
+         
+       var opts = { 
+	   width : 250,       
+       height: 100,      
+       title : "Hello" };   
+
+         var infoWindow = new BMap.InfoWindow("fffffff", opts);  
+       
+		  var marker = new BMap.Marker(point);        
+         marker.addEventListener("click", function(){
+         map.openInfoWindow(infoWindow, map.getCenter());});
+         map.addOverlay(marker);
+         
+  
+ var gc = new BMap.Geocoder(); 
+
+map.addEventListener("click", function(e){ 
+var pt = e.point;
+gc.getLocation(pt, function(rs){
+var addComp = rs.addressComponents;
+alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+}); 
+});
+          
+               
+
+        </script>
+	   
+		 </body>
+</html>

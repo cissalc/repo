@@ -1,0 +1,58 @@
+1、以一个测试用的项目为例(git://github.com/zjwangmin/wangmin.git)
+   这个项目得首先在github.com上创建好，名字为wangmin.git
+
+2、转到你的工作目录或者随便一个你工作的地方
+   [wangmin@wm ~]$ cd workspace
+
+3、创建、下载项目文件夹（不知道是不是该叫它“包”）
+   [wangmin@wm workspace]$ git clone git://github.com:zjwangmin/wangmin.git
+   等待一段时间后，项目就下好了
+
+4、进去项目目录
+   [wangmin@wm workspace]$ cd wangmin
+
+5、查看主枝和分支。登录GitHub.com，加入项目后，在项目里的Network有图形化的分支图
+   [wangmin@wm wangmin]$ git show-branch
+   [master] a new branch
+   master是默认的住分支名
+
+6、建立项目远程地址
+   [wangmin@wm wangmin]$ git remote add origin git@github.com:zjwangmin/wangmin.git
+
+7、建立自己的分支或者使用当前分支都可以，下面介绍建立自己的分支
+   [wangmin@wm wangmin]$ git branch your_branch_name
+
+8、再看看有哪些分支
+   [wangmin@wm wangmin]$ git show-branch
+   ! [your_branch_name] a new branch
+   --
+   * [master] a new branch
+
+9、查看现在使用的分支
+   [wangmin@wm wangmin]$ git branch
+   * master
+     your_branch_name
+   加*号表示当前使用的分支
+
+10、进入自己的分支
+    [wangmin@wm wangmin]$ git checkout your_branch_name
+    再查看一下当前的分支
+    [wangmin@wm wangmin]$ git branch
+      master
+    * your_branch_name
+
+11、添加、修改些东西，something代表你要修改的文件，或者新建一个文件都可以
+    [wangmin@wm wangmin]$ touch wangmin.c
+    [wangmin@wm wangmin]$ echo "hello wangmin" >wangmin.c
+
+12、把文件加入跟踪（注：每次提交前必须要这步）
+    [wangmin@wm wangmin]$ git add wangmin.c
+
+13、提交修改（提交到本地，还没有传到服务器）
+    [wangmin@wm wangmin]$ git commit -m '说明'
+
+14、提交分支到服务器
+    [wangmin@wm wangmin]$ git push origin your_branch_name
+
+15、获得最新的项目文件（从服务器下载）
+    [wangmin@wm wangmin]$ git pull git://github.com/zjwangmin/wangmin.git your_branch_name

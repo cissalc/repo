@@ -1,0 +1,77 @@
+1、执行命令的方式
+			
+	cli		命令行
+	jdbc	java
+	hwi		图形界面
+	beeline		底层jdbc实现  shell执行jdbc
+	
+	hive -help
+	hive --help
+	hive --service -help
+	
+	hive -e "hql"
+	hive -f filename  从文件中读取hql
+	
+	hive -S -e "select * from tablename" > /home/data
+	hive -V -e "select * from tablename" > /home/data
+	
+	test.sh
+	#!/bin/base
+	name1 = 'rose'
+	hive -e "select * from tablename where name=${name1}"
+	
+	live>add jar path     (加载带分布式缓存中)
+	live>list jar
+	
+	live>source /home/select_hql;  执行hql
+2、Hive操作-变量
+	配置变量
+		set val='';
+		${hiveconf:val}
+	环境变量
+		${env:HOME},注意env查看所有环境变量
+3、Hive数据加载
+  3.1 内表数据加载
+		创建表时加载
+			create table newtable as select c1,c2 from oldtable;
+		创建表时指定数据位置
+			create table tablename() location ''
+		本地加载数据
+			load data local inpath 'localpath' 【overwrite into table testtable;
+		加载hdfs数据
+			load data inpath 'hdfspath' 【overwrite into table testtable;
+			这个操作是移动数据
+		使用hadoop命令拷贝数据到指定位置(hive的shell中执行和linux的shell执行)
+		由查询语句加载数据	
+  3.2 外表数据加载
+		创建表时指定数据位置
+			create external table tablename() location ''
+		查询插入，同内表
+		使用hadoop命令拷贝数据到指定位置(hive的shell中执行和linux的shell执行)
+  3.3 Hive分区表数据加载
+		内部分区表和外部分区表数据加载
+  3.4 Hive数据加载注意问题
+		1）分隔符问题，且分隔符默认只有单个字符
+		2）数据类型对应问题
+			load数据，字段类型不能相互转化时，查询返回null
+			select查询插入，字段类型不能相互转化时，插入数据为null
+		3）select查询插入数据，字段值顺序要与表中字段顺序一致，名称可不一致
+			Hive在数据加载时不做检查，查询时检查
+		4）外部分区表需要添加分区才能看到数据
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

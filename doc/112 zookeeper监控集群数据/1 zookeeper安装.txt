@@ -1,0 +1,59 @@
+1 下载
+	http://apache.fayea.com/zookeeper/
+  参考
+	https://www.ibm.com/developerworks/cn/opensource/os-cn-zookeeper/
+	http://www.aboutyun.com/thread-11909-1-1.html
+	http://blog.csdn.net/u013327467/article/details/45675705
+	
+2 集群模式
+	1)解压
+		tar -zxvf zookeeper-3.4.6.tar.gz -C /home/hadoop/zookeeper-3.4.6
+	2) 修改配置文件
+		cd /home/hadoop/zookeeper-3.4.6/conf/
+		mv zoo_sample.cfg zoo.cfg
+		vi zoo.cfg
+			修改：
+				dataDir=/home/hadoop/zookeeper-3.4.6/dataDir
+			添加：
+				dataLogDir=/home/hadoop/zookeeper-3.4.6/logs
+				server.1=master:2888:3888
+				server.2=slave01:2888:3888
+				server.3=slave02:2888:3888
+	3) 创建文件夹
+		mkdir /home/hadoop/zookeeper-3.4.6/dataDir
+		cd /home/hadoop/zookeeper-3.4.6/dataDir
+		touch myid
+		echo 1 >> myid
+		mkdir /home/hadoop/zookeeper-3.4.6/logs
+	4)修改环境变量 
+		su - root
+		vi /etc/profile
+		export ZOOKEEPER_HOME=/home/hadoop/zookeeper-3.4.6
+		export PATH=:$ZOOKEEPER_HOME/bin:$ZOOKEEPER_HOME/conf
+		source /etc/profile
+	5)将配置好的zookeeper拷贝到其他节点
+		scp -r /home/hadoop/zookeeper-3.4.6/ hadoop@slave01:/home/hadoop/
+		scp -r /home/hadoop/zookeeper-3.4.6/ hadoop@slave02:/home/hadoop/
+		分别修改环境变量和myid文件（slave01写入1、slave02写入2)
+		
+3 hadoop配置文件中配置zookeeper
+4 集群启动
+	1)启动zookeeper集群（master、slave01、slave02)
+		cd zookeeper-3.4.6/bin/
+		./zkServer.sh start
+		查看状态：./zkServer.sh status
+	2) 启动journalnode（master、slave01、slave02)
+		cd hadoop-2.6.0/sbin
+		hadoop-daemon.sh start journalnode
+		hadoop-daemon.sh stop journalnode
+	3)格式化ZK(在master上执行即可)
+		hdfs zkfc -formatZK
+	4)启动HDFS(在master上执行)
+		sbin/start-dfs.sh
+	5)启动YARN.resourcemanager
+		sbin/start-yarn.sh
+	6) 验证 浏览器访问:
+		http://master:50070
+		NameNode 'master:9000' (active)
+		http://slave01:50070
+		NameNode 'slave01:9000' (standby)

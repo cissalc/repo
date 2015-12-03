@@ -1,0 +1,23 @@
+在 /etc/flume/conf 目录创建 f2.conf 文件，内容如下:
+	
+	#定义source、channel、sink
+	agent-1.sources = src-1
+	agent-1.channels = ch-1
+	agent-1.sinks = log-sink1
+
+	#初始化source
+	agent-1.sources.src-1.type = spooldir
+	agent-1.sources.src-1.channels = ch-1
+	agent-1.sources.src-1.spoolDir = /home/hadoop/logs
+	agent-1.sources.src-1.fileHeader = true
+	
+	#初始化channel
+	agent-1.channels.ch-1.type = memory
+
+	#初始化sink
+	agent-1.sinks.log-sink1.channel = ch-1
+	agent-1.sinks.log-sink1.type = logger
+
+接下来启动 agent：
+$ flume-ng agent -c conf -f conf/f2.conf -Dflume.root.logger=DEBUG,console -n agent-1
+然后，手动拷贝一个文件到 /home/hadoop/logs 目录，观察日志输出以及/home/hadoop/logs 目录下的变化。

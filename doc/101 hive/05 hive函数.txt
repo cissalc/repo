@@ -1,0 +1,119 @@
+1、函数分类
+	函数分为内置函数和自定义函数
+	内置函数：简单函数、聚合函数、集合函数、特殊函数
+	自定义函数：UDF、UDAF
+2、显示当前会话有多少函数可用
+	show functions;
+3、显示函数的描述信息
+	desc function concat;
+4、显示函数的扩展描述信息
+	desc function extended concat;
+5、窗口函数 
+	 
+		first_value(money) over (partition by id order by money 
+		rows between unbounded preceding and 1 following);	 
+		lead(money,3) over(order by money);
+		lag  ; 
+		
+		
+6、分析函数
+	rank
+	row_number
+	dense_rank
+	cume_dist
+	percent_rank
+	ntile
+	
+	rank() over(partition by id order by money);
+		dense_rank() over(partition by id order by money);
+		rank() over(partition by id order by money);
+		percetn_ranc() over(partition by id order by money);
+		cume_dist() over(partition by id order by money);
+		ntile(2)  over(partition by id order by money);
+7、混合函数
+	java——method（class,method[arg1[,arg2]]）
+	reflect(class,method[arg1[,arg2]])
+	hash
+		
+	java_method("java.lang.Math","sqrt",cast(id as double))
+	
+8、常用函数
+	8.1 case(money as bigint)
+	8.2	if(2>1,id,name)
+		case when id='1001' then 'v1' 
+			 when id='1002' then 'v2'
+			 else 'v3'
+		end;
+	8.3 get_json_object('{"name":"jack","age":"20"}','$.name')
+	8.4 parse_url('http://www.baidu.com');
+	8.5 concat(type,'123');
+	8.6 concat_ws('-',split(type,''));
+	8.7 collect_set(id);
+	8.8 collect_list(id);
+9、UDTF
+	表函数 ： explode函数
+	select id,adid
+	from tablename
+	lateral view explode(split(type,'B')) tt as adid;
+10、正则表达式函数
+	rlike
+	regexp_replace(string A,string B,string C);
+	regexp_extract(string subject,string pattern,int index);
+	
+	select 1 from dual where 'footbar' rlike ^f.*r$';
+	
+11、自定义函数
+12、UDF
+	UDF  《  自定义函数  》 UDAF
+	UDF-用户自定义函数：针对单条记录
+	
+	创建函数：
+		1）自定义一个类
+		2）继承UDF类
+		3）重写evaluate方法
+		4）打jar包
+		5）hive执行add jar
+		6）hive执行创建模板函数
+		7）hql中使用
+13、UDAF
+	UDAF用户自定义聚合函数（针对记录聚合）
+	开发彤彤UDAF有两个步骤
+		1)编写resolver类，resolver负责类型检查，操作符重载
+		2)编写evaluator类，evaluator真正实现UDAF的逻辑
+	通常来说，顶层UDAF类继承
+		org.apache.hadoop.hive.ql.udf.GenericUDAFResolver2
+		里面编写嵌套类evaluator实现UDAF的逻辑
+	Mode：这个类比较重要，它表示了udaf在mapreduce的各个阶段
+	MapReduce阶段调用函数
+		Map：init() iterate() terminatePartial() 
+		Combiner:merge() terminatePartial()
+		Reduce:init() merge() terminate()
+	看源码写的聚合函数：src.ql.src.java.org.apache.hadoop.hive.ql.udf.generic
+		
+	add jar /home/jar/function.jar;
+	create temporary function bigthan as 'com.udf.udftest';
+	
+14、永久函数
+	三种方法：
+	1）修改源码：ql.src.java.org.apache.hadoop.hive.ql.exec.FunctionRegistry.java类
+		添加相应的注册函数代码
+		registerUDF("parse_url",UDFParseUrl.class,false);
+	2）hql文件，hive -i 'file'
+	3)新建hiverc文件
+		jar包放到安装目录下或者指定目录下
+		$HOME/.hiverc  (在进入hive客户端的时候会自动给调用该文件)
+		把初始化语句加载文件中
+			add jar /home/jar/function.jar;
+			create temporary function bigthan as 'com.udf.udftest';
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

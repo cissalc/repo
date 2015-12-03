@@ -1,0 +1,52 @@
+﻿CentOS 6.5 下安装 Redis 2.8.7
+
+
+	yum install gcc-c++
+	yum install -y tcl
+	wget http://download.redis.io/redis-stable.tar.gz
+	tar xvzf redis-stable.tar.gz
+	cd redis-stable
+	make
+
+
+
+	在make成功以后，会在src目录下多出一些可执行文件：redis-server，redis-cli等等。
+	方便期间用cp命令复制到usr目录下运行。
+	cp redis-server /usr/local/bin/
+	cp redis-cli /usr/local/bin/
+
+	然后新建目录，存放配置文件
+	mkdir /etc/redis
+	mkdir /var/redis
+	mkdir /var/redis/log
+	mkdir /var/redis/run
+	mkdir /var/redis/6379
+	 
+	在redis解压根目录中找到配置文件模板，复制到如下位置。
+	cp redis.conf /etc/redis/6379.conf
+	通过vim命令修改
+		daemonize yes
+		pidfile /var/redis/run/redis_6379.pid
+		logfile /var/redis/log/redis_6379.log
+		dir /var/redis/6379
+
+	最后运行redis：
+		$ redis-server /etc/redis/6379.conf
+	查看是否启动：
+		ps -ef | grep redis
+	
+	进入命令行工具：
+		redis-cli
+		
+	set key "test1"
+	get key
+	
+	zadd s 1 sina
+	zadd s 2 baidu
+	zadd s 3 google
+	zrange s 0 -1
+	zrange s 0 -1 withscores
+	zrevrange s 0 -1
+	zrevrange s 0 -1 withscores
+	
+	

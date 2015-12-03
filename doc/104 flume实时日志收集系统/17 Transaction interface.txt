@@ -1,0 +1,4 @@
+1 Transaction interface
+	所有重要主键必须使用它；
+	用ChannelSelector接口来封装Transaction；
+	

@@ -1,0 +1,92 @@
+1、查询操作
+	group by
+	order by
+	join
+	distribute by
+	sort by
+	cluster by
+	union all
+2、底层实现
+	MapReduce
+3、几个简单的聚合操作
+	3.1 count 计数
+		count(*) 
+		count(1)
+		count(col)
+	3.2 sum求和
+		sum(可转成数字的值)返回bigint
+		sum(col)+cast(1 as bigint)
+	3.3 avg求平均值
+		avg(可转成数字的值)返回double
+	3.4distinct 不同值个数
+		count(distinct col)
+		
+4、group by
+5、order by
+6、join
+	6.1 两个表m,n之间按照on条件连接，m中的一条记录和n中的一条记录组成一条新记录
+	6.2 join等值连接，只有某个值在m和n中同时存在时
+	6.3 left outer join 左外连接
+		左边表中的值无论是否在b中存在时，都输出；
+		右边表中的值只有在左边表中存在时才输出；
+	6.4 right outer join 和 left outer join相反
+	6.5 left semi join 类似exists
+	6.6 mapjoin 在map端完成join操作，不需要用reduce，
+		基于内存做join，术语优化操作
+		使用场景：
+			1、关联操作中有一张表非常小
+			2、不等值的链接操作
+	6.7 set hive.optimize.skewjoin = true
+7.分桶   cluster by
+8、Distribute by 和 sort by
+	8.1 Distribute分散数据
+		distribute by col
+	    按照col列把数据分散到不同的reduce
+	8.2 sour排序
+		sort by col2
+		按照col列把数据排序
+	8.3 select col1，col2  from M
+		distribute by col1 
+		sort by col1 asc，col2 desc;
+	8.4 两者结合出现，确保每个reduce的输出都是有序的
+	8.5 用用场景
+		map输出的文件大小不均
+		reduce输出文件大小不均
+		小文件过多
+		文件超多
+9 order by 和 sort by
+	order by 是全局排序的
+	sort by 只是确保每个reduce上面输出的数据有序，
+	如果sort by只有一个reduce时，等价于order by
+10、cluster by
+	10.1 把有相同值的数据聚集在一起，并排序
+	10.2 效果
+		cluster by col
+		distribute by col sort by col
+11、Union all
+	11.1 多个表的数据合并成一个表，hive不支持union
+	11.2 样例
+		select col
+		from(
+			select a as col from t1
+			union all
+			select b as col from t2
+		)tmp
+	11.3 要求
+		字段名字一样
+		字段类型一样
+		字段个数一样
+		子表不能有别名
+		如果需要从合并之后的表中查询数据，那么合并的表必须要有别名
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

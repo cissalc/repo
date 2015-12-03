@@ -1,0 +1,15 @@
+1 FileSystem对象中的open方法返回的是FSDataInputStream对象
+	不是标准的java.io类对象。
+	public class FSDataInputStream extends DataInputStream
+    implements Seekable, PositionedReadable, 
+      ByteBufferReadable, HasFileDescriptor, CanSetDropBehind, CanSetReadahead,
+      HasEnhancedByteBufferAccess {
+		//implements
+	}
+	
+2 常用方法：
+	public static FileSystem get(Configuration conf) throws IOException;
+	public FSDatalnputStream open(Path f) throws IOException;
+	public FSDataOutputStream create(Path f) throws IOException;
+	public boolean mkdirs(Path f) throws IOException;
+	public abstract FileStatus getFileStatus(Path f) throws IOException;

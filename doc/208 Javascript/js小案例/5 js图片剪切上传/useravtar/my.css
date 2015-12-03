@@ -1,0 +1,179 @@
+@charset "utf-8";
+/* CSS Document */
+
+#main{
+	border:2px solid #858585; 
+	width:450px;
+	margin:35px auto 0;
+	position:relative;
+	height:400px;
+}
+
+#wrap{
+	/*width:800px; */
+	border:0px solid #9900FF; 
+	position:relative;
+	margin: 5px;
+	width:300px;
+	height:360px;
+	float:left;
+	overflow:hidden;
+}
+#wrap img {
+	position:absolute;
+	cursor:move;	
+}
+#wrap #shadow{
+	position:absolute; 
+	top:120px;
+	left:90px; 
+	width:120px;
+	height:120px; 
+	text-align:center;
+	overflow:hidden;
+}
+#preDiv {
+	width:120px;
+	height:120px;
+	margin:5px;
+	overflow:hidden;
+	position:relative;
+	background-color:#fff;
+	border:1px dashed #000000;
+	float:left;
+}
+
+#selFileDiv {
+	width:120px;
+	margin:35px 5px 0;
+	overflow:hidden;
+	background-color:#fff;
+	border:0px dashed #000000;
+	float:left;
+	position:relative;
+}
+
+#selFileDiv a {
+	/*background:transparent url(btn.png) no-repeat scroll 0pt -120px;*/
+	background:url(./images/btn1.gif) center no-repeat;
+	color:#fff;
+	font-size:14px;
+	font-weight:bold;
+	display:block;
+	height:26px;
+	line-height:26px;
+	text-align:center;
+	text-decoration:none;
+}
+
+#picture {
+	filter:Alpha(opacity=0);
+	opacity:0;
+	left:-295px;
+	top:-28px;
+	*left:-310px;
+	*top:-26px;
+	position:absolute;
+	cursor:pointer;
+	font-size:28px;
+	outline:none;/*ff*/
+    hide-focus:expression(this.hideFocus=true);/*ie*/
+}
+
+#preDiv img {
+	position:absolute;
+	text-align:center;
+}
+
+#slideDiv {
+	position:relative;
+	margin:0 0 15px 5px;
+	width:300px;
+	display:none;
+}
+
+
+#slideBlock {
+	position:absolute;
+	border:0px;
+	top:-1px;
+	*top:1px;	
+	left:232px;
+	/*left:386px;	max 284   js init set*/
+}
+
+#btnDiv {
+	border:0px solid #000;
+	float:left;
+	height:30px;
+	width:122px;
+}
+
+#btnDiv a {
+	color:#fff;
+	font-size:16px;
+	font-weight:bold;
+	display:inline-block;
+	height:26px;
+	width:60px;
+	line-height:26px;
+	text-align:center;
+	text-decoration:none;
+}
+
+#btnDiv .ok {
+	background:url(./images/ok.gif) center no-repeat;
+	float:left;
+}
+
+#btnDiv .reset {
+	background:url(./images/reset.gif) center no-repeat;
+	float:right;
+}
+
+#promptDiv {
+	background:url(./images/tishi.png) center no-repeat;
+	float:left;
+	height:125px;
+	width:122px;
+}
+
+#promptDiv1 {
+	background:url(./images/tishi1.png) center no-repeat;
+	position:absolute;
+	height:27px;
+	width:232px;
+	left:70px;
+	top:165px;	
+}
+
+#promptDiv2 {
+	background:url(./images/tishi2.png) center no-repeat;
+	position:absolute;
+	height:27px;
+	width:273px;
+	left:25px;
+	top:315px;	
+}
+
+#zoomInDiv {
+	float:left;
+	margin-right:5px;
+	cursor:pointer;
+}
+
+#zoomOutDiv {
+	float:left;
+	position:relative;
+	margin-left:5px;
+	cursor:pointer;
+}
+
+#uploadMsg {
+	position: relative;
+	top:100px;
+	left:70px;
+	font-size: 14px;
+	font-weight: bold;
+	display: none;
+}

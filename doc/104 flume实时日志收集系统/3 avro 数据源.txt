@@ -1,0 +1,95 @@
+在 /etc/flume/conf 目录创建f1.conf 文件，内容如下:
+	#定义source、channel、sink
+	agent-1.channels = ch-1
+	agent-1.sources = avro-source1
+	agent-1.sinks = log-sink1
+	
+	#初始化source
+	agent-1.sources.avro-source1.channels = ch-1
+	agent-1.sources.avro-source1.type = avro
+	agent-1.sources.avro-source1.bind = master
+	agent-1.sources.avro-source1.port = 41414
+	agent-1.sources.avro-source1.threads = 5
+	
+	#初始化channel
+	agent-1.channels.ch-1.type = memory
+	
+	#初始化sink
+	agent-1.sinks.log-sink1.channel = ch-1
+	agent-1.sinks.log-sink1.type = logger
+启动agent
+进入flume的主目录
+$ bin/flume-ng agent -c conf -f conf/f1.conf -Dflume.root.logger=DEBUG,console -n agent-1
+参数说明：
+-n 指定agent名称
+-c 指定配置文件目录
+-f 指定配置文件
+-Dflume.root.logger=DEBUG,console 设置日志等级
+
+下面可以启动一个 avro-client 客户端生产数据
+$ flume-ng avro-client -c conf -H master -p 41414 -F /etc/passwd -Dflume.root.logger=DEBUG,console
+
+
+eclipse：
+import org.apache.flume.Event;
+import org.apache.flume.EventDeliveryException;
+import org.apache.flume.api.RpcClient;
+import org.apache.flume.api.RpcClientFactory;
+import org.apache.flume.event.EventBuilder;
+import java.nio.charset.Charset;
+
+public class MyApp {
+  public static void main(String[] args) {
+    MyRpcClientFacade client = new MyRpcClientFacade();
+    // Initialize client with the remote Flume agent's host and port
+    client.init("master", 41414);
+
+    // Send 10 events to the remote Flume agent. That agent should be
+    // configured to listen with an AvroSource.
+    String sampleData = "Hello Flume!";
+    for (int i = 0; i < 10; i++) {
+      client.sendDataToFlume(sampleData+i);
+    }
+
+    client.cleanUp();
+  }
+}
+
+class MyRpcClientFacade {
+  private RpcClient client;
+  private String hostname;
+  private int port;
+
+  public void init(String hostname, int port) {
+    // Setup the RPC connection
+    this.hostname = hostname;
+    this.port = port;
+    this.client = RpcClientFactory.getDefaultInstance(hostname, port);
+    // Use the following method to create a thrift client (instead of the above line):
+    // this.client = RpcClientFactory.getThriftInstance(hostname, port);
+  }
+
+  public void sendDataToFlume(String data) {
+    // Create a Flume Event object that encapsulates the sample data
+    Event event = EventBuilder.withBody(data, Charset.forName("UTF-8"));
+
+    // Send the event
+    try {
+      client.append(event);
+    } catch (EventDeliveryException e) {
+      // clean up and recreate the client
+      client.close();
+      client = null;
+      client = RpcClientFactory.getDefaultInstance(hostname, port);
+      // Use the following method to create a thrift client (instead of the above line):
+      // this.client = RpcClientFactory.getThriftInstance(hostname, port);
+    }
+  }
+
+  public void cleanUp() {
+    // Close the RPC connection
+    client.close();
+  }
+
+}
+发送数据到master

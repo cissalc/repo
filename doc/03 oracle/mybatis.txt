@@ -1,0 +1,18 @@
+1.向字段中插入null值会报错，必须指定类型jdbcType=VARCHAR
+	INSERT INTO t_problem_advice(
+            ID               ,
+            PROBLEM_TITLE    ,
+            PROBLEM_DESC     ,
+            ADVICE           ,
+            ERROR_IMAGE      ,
+            COMMIT_TIME      ,
+            COMMIT_PERSON           
+	) VALUES (
+		problem_advice_seq.nextval,
+		#{      problemTitle      ,jdbcType=VARCHAR},
+		#{      problemDesc       ,jdbcType=VARCHAR},
+		#{      advice            ,jdbcType=VARCHAR},
+		#{      errorImage        ,jdbcType=VARCHAR },
+		#{      commitTime        ,jdbcType=VARCHAR},
+		#{      commitPerson      ,jdbcType=VARCHAR }
+	)

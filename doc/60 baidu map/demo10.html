@@ -1,0 +1,58 @@
+<html>
+    <head>
+	    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>解析</title>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+        <style type="text/css">
+        #hh{
+            width:600px;
+            height:400px;
+        }
+        </style>
+    </head>
+       <body>
+        <div id="hh"></div>
+		<input type='text' id='huan' size='20'><input type="button" value='search' onclick='jiexi()'>
+       <script type="text/javascript">
+            var map = new BMap.Map("hh");
+            var point = new BMap.Point(116.404, 39.915);
+            map.centerAndZoom(point,14);  
+            map.enableScrollWheelZoom();
+           var opts = {anchor:  BMAP_ANCHOR_TOP_LEFT, offset: new BMap.Size(10, 10)}  
+           map.addControl(new BMap.NavigationControl(opts));  
+         
+         
+       var opts = { 
+	   width : 250,       
+       height: 100,      
+       title : "Hello" };   
+
+         var infoWindow = new BMap.InfoWindow("fffffff", opts);  
+       
+		  var marker = new BMap.Marker(point);        
+         marker.addEventListener("click", function(){
+         map.openInfoWindow(infoWindow, map.getCenter());});
+         map.addOverlay(marker);
+         
+   function  jiexi()
+   {
+       // 创建地址解析器实例
+var myGeo = new BMap.Geocoder();
+// 将地址解析结果显示在地图上,并调整地图视野
+var addre=document.getElementById('huan').value;
+alert(addre);
+myGeo.getPoint(addre, function(point){
+if (point) {
+ 
+map.centerAndZoom(point, 16);
+map.addOverlay(new BMap.Marker(point));
+}
+});
+
+     }      
+               
+
+        </script>
+	   
+		 </body>
+</html>

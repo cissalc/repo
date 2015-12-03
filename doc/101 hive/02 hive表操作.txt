@@ -1,0 +1,59 @@
+1、基本数据类型
+2、集合类型
+	array
+	map
+	struct
+3、基本使用文件
+	3.1 文件格式
+		textfile 
+			直接查看hdfs
+			hadoop fs -text
+		sequencefile
+		rcfile
+	3.2 扩展接口
+		默认的文件读取方式
+		自定义inputformat
+		自定义serde
+	3.3 hive使用serDe（hive自带序列化的类  在org.apache.hadoop.hive.serde2.RegexSerDe包下）
+		serDe
+		RegexSerDe
+		
+4、表的基本使用
+	external
+	internal
+	like
+	as
+	
+5、表操作命令
+	show tables;
+	desc [extended,formatted] table;
+	drop table tablename;
+6、加载文件中的数据到数据表中
+	load data local inpath '/home/data/data1' overwrite into table testtable;
+	load data local inpath '/home/data/data1' into table testtable;
+7、外部表和内部表的区别
+	external  在删除表的时候，不会删除指定的数据位置
+	internal  在删除表的时候，会删除指定的数据位置
+8、Hive分区表
+	创建表+分区
+	添加分区
+	删除分区
+	show partitions tablename;
+9、Hive分桶
+	采用队列值哈希
+	set hive.enforce.bucketing = true  或者修改配置文件
+10、Hive基本使用-查询
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

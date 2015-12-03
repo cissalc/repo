@@ -1,0 +1,2 @@
+System -> Preferences -> Screensaver
+把闲置时启用屏保的勾去掉

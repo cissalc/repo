@@ -1,0 +1,143 @@
+1、Google的十大核心技术，可以分为四类
+	1.1 分布式基础设施
+		GFS 
+		Chubby 
+		Protocol Buffer
+	1.2 分布式大规模数据处理
+		MapReduce 
+		Sawzall
+	1.3 分布式数据库技术
+		BigTable
+		数据库Sharding
+	1.4 数据中心优化技术
+		数据中心高温化
+		12V电池
+		服务器整合
+		
+2、MapReduce架构
+
+3、Hadoop特点
+	3.1 开源
+	3.2 Reliability
+		分布式文件系统的备份恢复机制
+		以及MapReduce的任务监控保证分布式处理的可靠性
+	3.3 Availability
+		框架可以运行在任何普通的PC上
+	3.4 Scability
+		存储扩展和计算扩展都是hadoop设计的根本
+	3.5 High Efficiency
+		分布式文件系统的高效数据交互实现
+		以及Mapreduce集合LocalData处理模式
+		为高效处理海量的信息作了基础准备
+		
+4、Hadoop core （hadoop内核）
+	4.1 HDFS组件
+	4.2 MapReduce组件
+	4.3 Common组件
+		Hadoop IO
+		压缩
+		RPC通信
+		序列化、
+		
+		可以利用JNI方法调用c/c++语言编写的native库
+		加速了如数据压缩、数据校验等功能
+		
+5、HDFS架构
+	NameNode:Metadata
+	client
+	Rack
+	DataNodes
+	Replication
+6、HDFS读操作
+	HDFS CLient
+	client JVM
+	Distributed FileSystem
+	NameNode
+	FSDataInputStream
+	DataNode
+7、HDFS写操作
+	HDFS CLient
+	client JVM
+	Distributed FileSystem
+	NameNode
+	FSDataOutputStream
+	Write packet
+	DataNode
+	PipeLine of DataNodes
+8、MapReduce组件
+	Client
+	JobTracker
+	TaskTracker
+	MapTask
+	ReduceTask
+9、MapReduce
+	input HDFS
+	split
+	map
+	sort
+	copy
+	merge
+	reduce
+	part
+	HDFS replication
+	output HDFS
+	
+10、Hadoop生态系统
+	HDFS
+	MapReduce
+	Hbase（Big Table）
+	Hive（SQL）
+	Pig（Data Flow）
+	Oozie(Workflow Scheduler)：流程调度
+	Hcatalog(table management)
+	Zookeeper
+	Ambari
+	
+11、Hadoop Distribution（发行版）
+	Cloudera CDH
+	Hortonworks HDP
+	Intel Distribution
+	IBM BigInsight
+12、Hadoop版本选择
+	12.1
+		hadoop1.0
+			0.20.x  ->  1.0.x稳定版本
+			0.21.x
+			0.22.x
+	12.2
+		hadoop2.0 
+			0.23.x
+			2.x
+		一套全新的架构
+		HDFS Federation 和 Yarn两个系统
+		增加Namenode HA和Wire-compatibility两个重大特性
+	
+		
+13、文件检查工具fsck的作用
+	检查文件系统的一个健康状态
+	查看一个文件所在的数据块
+	删除一个数据块
+	查找一个缺失的块
+	
+14、磁盘均衡器balancer
+	./hadoop balancer
+	start
+15、文件归档Archive
+	防止小文件
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

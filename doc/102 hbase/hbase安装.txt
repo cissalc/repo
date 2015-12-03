@@ -1,0 +1,253 @@
+﻿(1)下载地址：http://www.apache.org/dyn/closer.cgi/hbase/，在此路径下选择相应的版本下载，本次安装下载hadoop1.0.0版本
+(2)解压hbase-1.0.0-bin.tar.gz
+(3)将hbase添加到环境变量中
+    export HBASE_HOME=/home/hadoop/hbase-1.0.0
+    export PATH=$HBASE_HOME/bin:$PATH
+(4)修改配置文件
+    修改hbase-env.sh
+	export JAVA_HOME=/opt/jdk1.7.0_71
+	export HBASE_MANAGES_ZK=false
+	export HBASE_PID_DIR=/home/hadoop/hbase-1.1.0/pids
+	export HBASE_CLASSPATH=/home/hadoop/hadoop-2.6.0/etc/hadoop
+	export HBASE_HOME=/home/hadoop/hbase-1.1.0 
+
+	修改hbase-site.xml
+<configuration>
+   <property>
+       <name>hbase.tmp.dir</name>
+       <value>/home/hadoop/hbase-1.0.0/tmp</value>
+   </property>
+  <property>
+      <name>hbase.rootdir</name>
+      <value>hdfs://master01/hbase</value>
+   </property>
+    <property>
+         <name>hbase.cluster.distributed</name>
+         <value>true</value>
+   </property>
+   <property>
+      <name>zookeeper.session.timeout</name>
+      <value>120000</value>
+   </property>
+   <property>
+    <name>hbase.zookeeper.property.tickTime</name>
+    <value>6000</value>
+  </property>
+  <property>
+     <name>hbase.zookeeper.property.clientPort</name>
+     <value>2181</value>
+   </property>
+   <property>
+      <name>hbase.zookeeper.quorum</name>
+      <value>master,slave01,master02</value>
+    </property>
+   <property>
+      <name>hbase.zookeeper.property.dataDir</name> 
+      <value>/home/hadoop/zookeeper-3.4.6/dataDir</value>
+   </property>
+   <property>
+      <name>dfs.replication</name>
+      <value>2</value>
+    </property>
+    <property> 
+       <name>hbase.master.maxclockskew</name> 
+       <value>180000</value>
+    </property> 
+</configuration>
+	
+	修改regionservers
+	添加：
+	slave01
+	slave02
+	
+	把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
+	cp /home/hadoop/hadoop-2.6.0/etc/hadoop/hdfs-site.xml /home/hadoop/hbase-1.0.0/etc
+	cp /home/hadoop/hadoop-2.6.0/etc/hadoop/core-site.xml /home/hadoop/hbase-1.0.0/etc
+	
+	scp -r hbase-1.0.0 hadoop@slave01:/home/hadoop/
+	scp -r hbase-1.0.0 hadoop@slave02:/home/hadoop/
+	
+(5)启动hbase
+	启动hbase时要确保hdfs已经启动。在主节点上执行：
+	 start-hbase.sh
+	 
+	 启动成功后集群会多出如下进程：
+    NameNode节点：
+		HMaster
+		HQuorumPeer
+	
+	Datanode节点：
+		HRegionServer
+		HQuorumPeer
+		
+	通过浏览器查看：
+    输入：http://master:16030
+	
+	
+2.3 Hbase shell测试
+	(1)执行hbase shell 命令：
+	(2)创建t_test表
+		 create 't_test', 'col_faml'
+	(3)put数据
+		 hbase shell是基于Ruby实现的，因此使用过程中可以将hbase shell与Ruby代码混合使用，此示例参考《HBase权威指南》p-66页shell介绍。
+
+		create 't_scores','grade', 'course'
+		list
+		describe 't_scores'
+		put 't_scores','user_1','grade:','5'
+		put 't_scores','user_1','course:math','97'
+		put 't_scores','user_1','course:art','87'
+		
+		put 't_scores','user_2','grade:','4'
+		put 't_scores','user_2','course:math','93'
+		put 't_scores','user_2','course:art','89'
+		
+	(4)查看插入数据
+		scan 't_scores'
+		scan 't_scores',{COLUMNS => 'course'}
+		get 't_scores','user_1'
+		get 't_scores','user_2'
+	(5) 删除
+		disable 't_scores'
+		drop 't_scores'
+		
+		disable 't_test'
+		drop 't_test'
+	
+总结下，hbase shell常用的操作命令有create,describe,disable,drop,list,scan,put,get,delete,deleteall,count,status等，通过help可以看到详细的用法。
+
+2.4 命令
+	status 查看数据库状态
+	version 查看数据库版本
+	list 查看所有的表信息
+
+	删除列族：
+		disable 't_scores'
+		alter 't_scores',{NAME=>'grade',METHOD=>'delete'}
+		enable 't_scores'
+		
+	删除表：
+		disable 't_scores'
+		drop 't_scores'
+		
+	查询一个表是否存在
+		exists 't_scores'
+		
+	判断一个表是否在线(enable)或disable(离线)
+		is_enabled 't_scores'
+		is_disabled 't_scores'
+		
+	插入或者更新数据 （数据都是字符类型）
+		put 't_scores','user_1','grade:','5'
+		put 't_scores','user_1','course:math','97'
+		put 't_scores','user_1','course:art','87'
+		
+	获取一个行健的所有数据
+		get 't_scores','user_1'
+		
+	获取一个行健，一个列族中的一个列的所有数据
+		get 't_scores','user_1','course:math'
+		
+	跟新一条记录
+		put 't_scores','user_1','course:math','100'
+		
+	通过时间戳timestamp来获取数据
+		get 't_scores','user_1',{COLUMNS=>'course:math',TIMESTAMP=>1438006639896}
+		
+	全表扫描
+		scan 't_scores'
+		
+	删除指定行健的字段
+		delete 't_scores','user_1','course:math'
+		get 't_scores','user_1'
+
+	删除整行：
+		deleteall 't_scores','user_1'
+		
+	查看表中有多少行：
+		count 't_scores'
+		
+	清空表：
+		truncate 't_scores'
+	
+2.5 什么情况下使用Hbase
+	1）成熟的数据分析主题，查询模式已经确立并且不轻易改变
+	2）传统的关系型数据库已经无法承受负荷，高速插入，大量读取
+	3）适合海量的，但同时也是简单的操作（例如：key-value）
+	
+2.6 关系型数据库的困难
+	1）简单的事情只要上了量就会变成无比复杂的事情
+	2）order by 耗费很多性能
+	3）大量发生，但又无法分布式处理
+	4）顾客需要实时看到自己的足迹，因此不能使用缓存技巧
+	
+2.7 Hbase迎接挑战
+	1）天生就是面向时间戳查询
+	2）基于行健的查询异常快速，特别是最近的数据被放在内存的memstore里，完全没有IO开销
+	3）分布式化解负荷
+	
+2.8 模式设计
+	行健：userId
+	列族和列：book:bookid
+	为了充分利用分布式，可以用reverse key，hash等技术改造行健
+	
+2.9 推荐商品：时间戳 用户ID：userId 主题ID：threadId
+	1）两个表，一个是u-t , 另一个是t-u
+	2）U-T表的结构：行健为userid，列族和列为thread:threadid
+	3）T-U表的结构：行健为threadid,列族和列为user:userid 
+	4）查询：先在T-U表从threadid->userid ,再从U-T表从userid->threadid,在计算程序中实现去重和统计功能
+	
+	
+3.0 索引建立方式
+	1）辅助索引
+	例子：学生表（学号，身份证号，姓名，系，年龄），有时在学号上查询，有时在身份证号上查询
+	主表：行健为学号，列族为学生，下面的列是身份证号，姓名，系，年龄
+	辅助(索引)表：行健为身份证号，列族和列为学号
+	
+	2）复合行健设计
+	
+	<userId> : <colfam> ：<messageId>                   : <timestamp> : <email-message>
+	12345    : data     : kgoekr84-34kdo4kd-ksdfowe23o4 : 1309483920  : "hi ,lee:..."
+	
+	<userId>-<messageId>                : <colfam>: <timestamp> : <email-message>
+	12345-kgoekr84-34kdo4kd-ksdfowe23o4 : data    : 1309483920  : "hi ,lee:..."
+	
+	
+	好处：
+		1、便于分布
+		2、便于多条件伸缩查询
+		
+3.1 HBase客户端API操作
+	1）HBaseConfiguration  对HBase进行配置
+	2）HBaseAdmin  提供一个接口来管理HBase数据库的表信息
+	3）HTableDescriptor  包含表的名字及其对应表的列族
+	4）HColumnDescriptor  维护关于列族的信息
+	5）HTable  可以用来和HBase表直接通信
+	6）HTablePool  可以解决HTable存在的现场不安全问题，
+					同时维护固定数量的HTable对象，
+					能够在程序运行期间复用这些HTable资源对象
+		--》》HConnectionManager
+	7）Put  用来对单个执行添加操作
+	8）Get 用来获取单个执行操作
+	9）Result  存储Get或者Scan操作后获取表的单行值
+	10）ResultScanner 存储Get或者Scan操作后获取表的单行值
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	

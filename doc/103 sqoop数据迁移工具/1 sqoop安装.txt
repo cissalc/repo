@@ -1,0 +1,44 @@
+参考：http://www.aboutyun.com/thread-7581-1-1.html
+	  http://www.cnblogs.com/byrhuangqiang/p/3922594.html
+	  http://blog.csdn.net/z595054650/article/details/46546797
+	  http://zengzhaozheng.blog.51cto.com/8219051/1431882
+1 下载sqoop-1.99.6-bin-hadoop200 
+	http://mirror.bit.edu.cn/apache/sqoop/
+	
+2 配置环境变量
+  vi /etc/profile
+  
+  SQOOP_HOME = /home/hadoop/sqoop-1.99.6
+  PATH = $PATH;$SQOOP_HOME/bin
+  export SQOOP_HOME
+  export CATALINE_BASE = $SQOOP_HOME/server
+  export LOGDIR = $SQOOP_HOME/logs
+  
+  source /etc/profile 
+  
+3 修改sqoop的配置文件
+  ${SQOOP_HOME}/server/conf/catalina.properties
+  common.loader=${catalina.base}/lib,${catalina.base}/lib/*.jar,${catalina.home}/lib,${catalina.home}/lib/*.jar,${catalina.home}/../lib/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/common/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/common/lib/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/hadoop-hdfs/*.jar/home/hadoop/hadoop-2.6.0/share/hadoop/hadoop-hdfs/lib/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/hadoop-mapreduce/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/hadoop-mapreduce/lib/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/hadoop-yarn/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/hadoop-yarn/lib/*.jar,/home/hadoop/hadoop-2.6.0/share/hadoop/tools/lib/*.jar,/home/hadoop/hive/lib/*.jar
+  
+  ${SQOOP_HOME}/server/conf/sqoop.properties 
+  org.apache.sqoop.submission.engine.mapreduce.configuration.directory=/home/hadoop/hadoop-2.6.0/etc/hadoop/
+  
+4 复制数据库驱动包
+	mysql的驱动包mysql-connector-java-5.1.10-bin.jar放到${SQOOP_HOME}/server/lib/里面
+	oracle的数据库驱动包放到${SQOOP_HOME}/server/lib/里面
+	
+5 启动
+	先启动hadoop，再启动sqoop
+	
+	启动sqoop：${SQOOP_HOME}/bin/sqoop.sh server start
+				http://master:12000/sqoop/
+
+  
+6 客户端连接
+	客户端连接Sqoop 2 server：
+	客户端直接解压即可运行
+	
+	启动sqoop的客户端：${SQOOP_HOME}/bin/sqoop.sh client
+	
+	
+	

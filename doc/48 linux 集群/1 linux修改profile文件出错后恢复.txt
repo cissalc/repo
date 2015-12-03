@@ -1,0 +1,2 @@
+使用：export PATH=/usr/bin:/usr/sbin:/bin:/sbin:/usr/X11R6/bin
+然后修改profile文件为正常

@@ -1,0 +1,21 @@
+1 下载地址
+	http://www.scala-lang.org/files/archive/
+
+2 解压 
+	tar -zxf scala-2.11.6.tgz -C /home/hadoop/scala-2.11.6
+	
+3 修改环境变量 
+	sudo vi /etc/profile
+		export SCALA_HOME=/home/hadoop/scala-2.11.6
+		export PATH=$PATH:$SCALA_HOME/bin
+	source /etc/profile
+	
+	显示版本：scala -version
+	输入命令scala，进入交互界面
+	测试8*8
+
+4 将scala复制到其他节点
+	scp -r /home/hadoop/scala-2.11.6/ hadoop@slave01:/home/hadoop/
+	scp -r /home/hadoop/scala-2.11.6/ hadoop@slave02:/home/hadoop/
+
+5 重复3修改其他节点的环境变量

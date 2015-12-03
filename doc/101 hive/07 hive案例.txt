@@ -1,0 +1,28 @@
+1、日志处理流程
+	数据收集
+	数据清洗
+	数据存储与管理
+	数据分析
+	数据显示
+2、日志分析系统
+	Flume：日志收集工具
+	HDFS:分布式文件系统
+	Kafka：分布式消息系统  
+	MapReduce:分布式计算框架
+	Hive：数据仓库
+	Hbase:分布式实时数据库
+	Sqoop：数据ETL工具
+	Zookeeper：分布式协调服务
+	spark：实时计算
+	storm：实时计算
+3、Flume
+	一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统
+	agent source channel sink
+4、Kafka是高吞吐量日志处理的分布式消息队列
+	几个概念：
+	broker
+	producer
+	consumer
+	topic
+	partition
+	

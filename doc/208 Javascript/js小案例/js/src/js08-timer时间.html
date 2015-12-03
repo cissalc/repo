@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+	var timeId;
+	function cd1(){
+		setTimeout("change()",3000); //多少时间后调用
+	}
+	function cd2(){
+		timeId = setInterval("change()",200); //多少时间后调用
+	}
+	var bigger = true;
+	function change(){
+		var obj = document.getElementById("txt");
+		var size = obj.style.fontSize;
+		console.log(size);
+		size = parseInt(size);
+		console.log(size);
+		if(size>=30){
+			bigger = false;
+			obj.innerHTML = '变小';
+		}else if(size<=16){
+			bigger = true;
+			obj.innerHTML = '变大';
+		}
+		if(bigger){
+			obj.style.fontSize = size+2+"px";
+		}else{
+			obj.style.fontSize = size-2+"px";
+		}
+	}
+	function stop(){
+		clearInterval(timeId);
+	}
+</script>
+</head>
+<body>
+	<div id="txt" style="font-size:14px;">变大</div>
+	<div onclick="cd1()" style="cursor:pointer">点击开始setTimeout</div>
+	<div onclick="cd2()" style="cursor:pointer">点击开始setInterval</div>
+	<div onclick="stop()" style="cursor:pointer">暂停</div>
+</body>
+</html>

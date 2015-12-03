@@ -1,0 +1,149 @@
+常见问题：
+	数据倾斜；
+	Map数设置；
+	Reduce数设置；
+	其他；
+	
+1、hive查询操作优化
+2、join优化
+	2.1 hive.optimize.skewjoin = true;如果join过程出现倾斜应该设置为true
+	2.2 hive.skewjoin.key=100000;这个是join的键对应的记录条数超过这个值则会进行优化
+	2.3 mapjoin
+		hive.auto.convert.join=true;
+		hive.mapjoin.smalltable.filesize默认值是25mb
+		select /*+mapjoin(A)*/ f.a,f.b from A t join B f on(f.a=t.a)
+		应用场景：
+			1、关联操作中有一张表非常小
+			2、不等值的链接操作
+3、bucket join
+	两个表以相同方式划分桶
+	两个表的桶个数是倍数关系
+4、Hive SQL优化
+	select m.cid,u.id
+	from order m
+	join customer u
+	on m.cid = u.id
+	where m.dt='20150816'
+	
+	优化后
+	
+	select m.cid,u.id
+	from 
+	(
+	  select cid from order where dt='20150816'
+	) m
+	join customer u
+	on m.cid = u.id;
+5、group by 优化
+	hive.groupby.skewindata = true;如果group by过程中出现倾斜应该设置为true
+	set hive.groupby.mapaggr.checkinterval=100000;
+	这个是group的键对应的记录数超过这个值会进行优化；
+6、count distinct优化
+	优化前：
+		select count(distinct id) from tablename;  (一个reduce)
+	优化后：
+		select count(1) from  (select distinct id from tablename) tmp;
+		select count(1) from  (select id from tablename group by id) tmp;
+7、查看执行计划
+	explain [extended] hql
+8、表优化
+	8.1 分区
+		静态分区
+		动态分区
+			set hive.exec.dynamic.partition=true;
+			set hive.exec.dynamic.partition.mode=nonstrict;
+	8.2 分桶
+		set hive.enforce.bucketing = true;
+		set hive.enforce.sorting = true;
+	8.3 数据
+		相同数据尽量聚集在一起
+		
+10、hive job优化
+	10.1 并行化执行
+		每个查询被hive转化成多个阶段，
+		有些阶段关联性不大，则可以并行化执行，减少执行时间
+		set hive.exec.parallel=true;
+		set hive.exec.parallel.thead.numbe=8;
+	10.2、本地化执行
+		set hive.exe.mode.local.auto=true;
+		当一个job满足如下条件才能真正使用本地模式：
+		1、job的输入数据大小必须小于参数：
+			hive.exec.mode.local.auto.inputbytes.max（默认128MB）
+		2、job的map数必须小于参数
+			hive.exec.mode.local.auto.tasks.max(默认4)
+		3、job的reduce数必须为0或者1
+	10.3、job合并输入小文件
+		set hive.input.formate = oar.apache.hadoop.hive.ql.io.CombineHiveInputFormat
+		合并文件数由mapred.max.split.size限制的大小决定
+	10.4 job合并输出小文件
+		 set hive.merge.smallfiles.avgsize=256000000;
+		 当输出文件平均大小小于该值，启动新job合并文件
+		 set hive.merge.size.per.task=64000000;
+		 合并之后的文件大小；
+	10.5 JVM重利用
+		set mapred.job.reuse.jvm.num.tasks=20;
+		jvm重利用可以是job长时间保留slot，直到作业结束；
+	10.6 压缩数据
+11、Hive Map优化
+	set mapred.map.tasks=10;
+	1)默认map个数
+		default_num=total_size/block_size;
+	2)期望大小
+		goal_num=mapred.map.tasks;
+	3)设置处理的文件大小
+		split_size = max(mapred.min.split.size,block_size);
+		split_num=total_size/split_size;
+	4)计算的map个数
+		compute_map_num = min(split_num,max(default_num,goal_num));
+	总结：
+		1）如果想增加map个数，则设置mapred.map.tasks为一个较大的值
+		2）如果想减少map个数，则设置mapred.min.split.size为一个较大的值
+	
+	情况1：输入文件size巨大，但不是小文件
+			增大mapred.min.split.size的值
+	情况2：输入文件数量巨大，且都是小文件，就是单个文件的size小于blocksize。
+			这种情况通过增大mapred.min.split.size不可行，
+			需要使用CombineFileInputFormat将多个input path合并
+			成一个inputSplit送给mapper处理，从而减少mapper的数量；
+	
+	map端聚合
+		set hive.map.aggr=true;
+	推测执行
+12、Hive Shuffle优化
+	Map 端：
+		io.sort.mb
+		io.sort.spill.percent
+		min.num.spill.for.combine
+		io.sort.factor
+		io.sort.record.percent
+	Reduce端：
+		mapred.reduce.parallel.copies
+		mapred.reduce.copy.backoff
+		io.sort.factor
+		mapred.job.shuffle.input.buffer.percent
+		mapred.job.shuffle.input.buffer.percent
+		mapred.job.reduce.input.buffer.percent
+13、Hive Reduce优化	
+	13.1 需要reduce操作的查询
+		聚合函数
+		高级查询
+	13.2 推测执行
+		mapred.reduce.tasks.speculative.execution
+		hive.mapred.reduce.tasks.speculative.execution
+	13.3 reduce优化
+		set mapred.reduce.tasks=10;直接设置
+		hive.exec.reducers.max 默认：999
+		hive.exec.reducers.bytes.per.reducer 默认1G
+	
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+https://git.oschina.net
+
+git config --global user.email "1195718067@qq.com"
+ ssh-keygen -t rsa
+ git clone git@git.oschina.net:cissalc/test.git
+ git status
+ git add t.txt
+ git commit -m"first commit"
+ git push origin master
+ 
+ git pull  ¸üĞÂ´úÂë

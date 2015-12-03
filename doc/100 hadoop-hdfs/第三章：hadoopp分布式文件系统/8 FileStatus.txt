@@ -1,0 +1,8 @@
+1 文件元数据: FileStatus
+	任何文件系统的一个重要特征都是提供其目录结构浏览和检索它所存文件和目录相
+	关信息的功能。FileStatus 类封装了文件系统中文件和目录的元数据，包括文件
+	长度、块大小、备份、修改时间、所有者以及权限信息。
+	
+2 从文件系统中获取
+	public  FileStatus getFileStatus(Path f) throws IOException;
+	public FileStatus[] listStatus(Path f) throws IOException;

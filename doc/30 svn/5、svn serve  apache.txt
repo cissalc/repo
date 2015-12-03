@@ -1,0 +1,67 @@
+
+Step 1 » 更新库 Issue the below command to update the repositories. 
+sudo apt-get update
+
+Step 2 » 下载对应的安装包  After updating repositories , Issue the below command to install SVN and apache webserver (To access SVN through http ) .
+sudo apt-get install subversion apache2 libapache2-svn apache2-utils
+
+Step 3 » 安装svn Now create a directory and create a new repository in that directory ( Here i’m using 'repository' as repository name ).
+sudo mkdir -p /opt/svn/repos/
+sudo svnadmin create /opt/svn/repos/repository
+
+Step 4 » 配置svn库的所属者 Now change ownership for the repository
+sudo chown -R www-data:www-data /opt/svn/repos/repository
+
+Step 5 » 在apache下创建创建svn库的虚拟主机  Create a file repository.conf in /etc/apache2/sites-available/ and add the below lines for creating apache virtual host.
+<Location /svn>
+  DAV svn
+  SVNParentPath /opt/svn/repos/
+  AuthType Basic
+  AuthName "Test Repo"
+  AuthUserFile /etc/svnpasswd
+  Require valid-user
+ </Location>
+ 
+SVNParentPath /opt/svn/repos/ : Parent Directory without repository name.
+AuthUserFile /etc/svnpasswd : File need to be created ( Step 8) for user details.
+
+Step 6 » 使svn站点有效 Issue the below command to enable the Site ( repository in the below command should match the file name created in the previous step )
+sudo a2ensite repository
+
+Step 7 » 重新加载apache服务 Now restart or reload apache service.
+sudo service apache2 reload
+
+Step 8 »  Issue the command to create user for accessing repository and add the user details to /etc/svnpasswd file.
+Use this command to create first user.
+sudo htpasswd -cm /etc/svnpasswd cissalc
+Use the same command without c option to create additional users.
+sudo htpasswd -m /etc/svnpasswd liuxf
+
+Step 9 »  Now you can access http://yourip/svn/testrepo in your browser ( Eg http://10.1.1.138/svn/repository ) and you can see the page like below after successful authentication.
+
+
+==========
+辅助文件
+==========
+设置访问权限：
+/opt/svn/repos/repository/conf/svnserve.conf   配置svn服务信息
+anon-access = read  无需账户可以read
+auth-access = write 验证用户可以write
+/opt/svn/repos/repository/conf/passwd  该文件下可以添加用户和密码
+/opt/svn/repos/repository/conf/authz   设置访问权限
+admin = rose
+@admin = rw
+
+==========
+apache2
+==========
+启动、关闭、重启apache
+sudo /etc/init.d/apache2 reload
+产生的启动和停止文件是：/etc/init.d/apache2
+　　启动：sudo apache2ctl -k start
+　　停止：sudo apache2ctl -k stop
+　　重新启动：sudo apache2ctl -k restart
+相关配置文件：/etc/apache2
+
+默认欢迎界面：/var/www/html/index.html
+

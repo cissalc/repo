@@ -1,0 +1,22 @@
+1、RPC Client interface
+  Flume的RpcClient实现了Flume的RPC的机制。用户的应用程序可以很简单的
+  调用Flume Client SDK的append(Event)或者appendBatch(List<Event>)方法
+  发送数据，不用担心底层信息交换的细节。用户可以提供所需的event通过直接
+  实现Event接口，例如可以使用简单的方便的实现SimpleEvent类或者使用
+  EventBuilder的writeBody()静态辅助方法。
+  
+2、RPC clients （Avro and Thrift）
+  在flume1.4.0中，Avro是默认的RPC协议。
+  NettyAvroRpcClient和ThriftRpcClient实现了RcpClient接口。
+  实现中我们需要知道我们将要连接的目标flume agent的host和
+  port用于创建client实现，然后使用RpcClient发送数据到flume agent
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

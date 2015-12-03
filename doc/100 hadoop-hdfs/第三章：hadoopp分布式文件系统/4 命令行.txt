@@ -1,0 +1,3 @@
+1 从本地系统复杂一个文件到hdfs
+	hadoop fs -copyFromLocal input/docs/quangle.txt /home/hadoop/test.txt
+	hadoop fs -copyToLoca1 /home/hadoop/test.txt quang1e.copy.txt

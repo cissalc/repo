@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	var list = new Array();
+	list.push(11);
+	list.push(22);
+	console.log(list);
+	
+	list = new Array(11,22,33,44,'55');
+	console.log(list);
+	list.push('555');
+	console.log(list);
+	
+	list = [11,22,33,44,55,'66'];
+	console.log(list);
+	
+	console.log(list.join("--"));//转换成字符串通过--链接
+	console.log(list.sort());  //sort只会通过字符串来排序
+	
+	var a = list.pop();
+	console.log(a);
+	console.log(list);
+	
+	list.splice(2,0,31,32);  //在list中index为2的位置开始删除0个元素，并且增加2个元素31,32，原来的list不会改变
+	console.log(list);
+	
+	list.splice(2,2);
+	console.log(list);
+</script>
+</head>
+<body>
+		定义数组
+</body>
+</html>

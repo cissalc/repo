@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+	function clickDir(obj){
+		console.log(obj);
+		console.log(obj.innerHTML);
+	}
+	function f2(obj){
+		obj.style.color = "#F00";
+		obj.style.fontSize = "18px";
+	}
+	function f3(obj){
+		obj.style.color = "#000";
+		obj.style.fontSize = "16px";
+	}
+</script>
+</head>
+<body>
+	<div onclick="clickDir(this)" style="border:1px solid red;">hello world</div>
+	<div onmouseover="f2(this)" onmouseout="f3(this)">鼠标移动</div>
+</body>
+</html>

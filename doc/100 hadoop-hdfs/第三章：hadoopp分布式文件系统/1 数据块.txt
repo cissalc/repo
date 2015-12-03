@@ -1,0 +1,8 @@
+1 磁盘进行数据读/写的最小单位，默认64M
+2 目的：缩短寻址开销，加快作业的速度；简化存储管理
+3 该参数也不会设置得过大。MapReduce 中的map 任务通常一次处理一个块中的数据
+4 列出文件系统中各个文件由哪些块构成 
+	hadoop fsck / -才Files - bloc ks
+5 Hadoop 提供fsck 工具来检查HDFS 中文件的健康状况
+	hadoop fsck /
+	

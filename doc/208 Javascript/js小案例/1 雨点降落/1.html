@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src="./rainyday.0.1.2.min.js"> </script>
+<script>
+	function run() {
+		var image = document.getElementById("myimg");
+		image.onload = function(){
+			  //设定一个rain对象
+			  var engine = new RainyDay({
+				  image : this,
+			  });
+			  engine.rain([[1 , 2 ,  8000]]); //设定雨滴大小 1,2  数量8000
+			  engine.rain([[3 , 3 ,  0.88],[5 , 5 , 0.9 ],[ 6 , 2, 1]] , 100);//设定雨滴重复时间 100ms  
+		} 
+		image.crossOrigin = "anonymous";
+		image.src = "./1.png";
+	}
+</script>
+</head> 
+<body>
+	<div class="rain">
+	  <img  id = "myimg" src="1.png" alt="点击图片" onClick="run();" />
+	</div>
+</body>
+</html>
